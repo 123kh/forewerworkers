@@ -3,6 +3,8 @@
 <!--start page wrapper -->
 <div class="page-wrapper">
     <div class="page-content">
+        @include('alerts')
+
         <div class="col-md-12">
             <div class="row">
 
@@ -11,7 +13,7 @@
                         <div class="card-body">
                             <div class="card-title d-flex align-items-center">
 
-                                <h5 class="mb-0 text-primary">Add Workplace/Location </h5>
+                                <h5 class="mb-0 text-primary">Edit Workplace/Location </h5>
                             </div>
                             <hr>
                             <form class="row g-2" action="{{route('master.update_location')}}" method="post">

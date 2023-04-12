@@ -3,6 +3,8 @@
 <!--start page wrapper -->
 <div class="page-wrapper">
     <div class="page-content">
+        @include('alerts')
+
         <div class="col-md-12">
             <div class="row">
 
