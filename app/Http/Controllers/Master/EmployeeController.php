@@ -13,10 +13,9 @@ use Illuminate\Support\Facades\Validator;
 class EmployeeController extends Controller
 {
     public function index(){
-        $cat=Category:: orderby('add_category','asc')
-        ->get();
-        $loc=Location:: orderby('location','asc')
-        ->get();
+        $cat=get_categories();
+
+        $loc=get_location();
         return view('Master.employee',['cat'=>$cat,'loc'=>$loc]);
     }
 
@@ -25,7 +24,7 @@ class EmployeeController extends Controller
             $request->all(),
             [
                 'select_location' => ['required'],
-                'employee_id' => ['required'],
+                'employee_id' => 'required|unique:employees',
                 'employee_name' => ['required'],
                 'address' => ['required'],
                 'contact_number' => ['required'],

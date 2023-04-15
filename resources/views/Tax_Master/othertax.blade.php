@@ -33,6 +33,7 @@
 <!--start page wrapper -->
 <div class="page-wrapper">
     <div class="page-content">
+        @include('alerts')
         <div class="row">
             <div class="col-md-12 mx-auto">
                 <div class="card">
@@ -44,69 +45,80 @@
                         <hr>
                         <form class="row g-2" action="{{route('master.update_othertax')}}" method="post">
                             @csrf	
-                        
-                            <div class="col-md-2">
+                        <div class="row mt-2">
+                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label">Vacation Pay(In %)</label>
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="Vacation Pay(In %)" name="vacation_pay" value="{{$ottx->vacation_pay}}"> 
+                                <input type="number" step="0.0001" class="form-control" id="inputFirstName" placeholder="Vacation Pay(In %)" name="vacation_pay" value="{{$ottx->vacation_pay}}"> 
                             </div>
+                        </div>
+                           
+                        <div class="row mt-2">
+                            <div class="col-md-3">
+                                <label for="inputFirstName" class="form-label" >CPP(In % Employee Contribution)</label>
+                                <input type="number" step="0.0001" class="form-control" id="inputFirstName" placeholder="CPP(In % Employee Contribution)" name="CPP_Employee_Contribution" value="{{$ottx->CPP_Employee_Contribution}}"> 
+                            </div>
+                            <div class="col-md-2">
+                                <label for="inputFirstName" class="form-label" >Max Value</label>
+                                <input type="number" step="0.0001" class="form-control" id="inputFirstName" placeholder="Max Value" name="max_value_cpp" value="{{$ottx->max_value_cpp}}"> 
+                            </div>
+                        </div>
                             {{-- <div class="col-md-2" style="margin-top:7.5vh;text-align: left; margin-bottom: 2vh;" >
                                 <button type="submit" class="btn btn-primary px-3">Update</button>
                             
                             </div> --}}
 
                             {{-- <div class="col-md-9"></div><br> --}}
-                            <div class="col-md-3">
-                                <label for="inputFirstName" class="form-label" >CPP(In % Employee Contribution)</label>
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="CPP(In % Employee Contribution)" name="CPP_Employee_Contribution" value="{{$ottx->CPP_Employee_Contribution}}"> 
-                            </div>
-                            <div class="col-md-2">
-                                <label for="inputFirstName" class="form-label" >Max Value</label>
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="Max Value" name="max_value_cpp" value="{{$ottx->max_value_cpp}}"> 
-                            </div>
+                            
                             {{-- <div class="col-md-2" style="margin-top: 8.6vh;text-align: left;" >
                                 <button type="submit" class="btn btn-primary px-3">Update</button>
                             </div> --}}
                             {{-- <div class="col-md-10"></div> --}}
+                        <div class="row mt-2">
                             <div class="col-md-3">
                                 <label for="inputFirstName" class="form-label" >CPP(In % Employer's Contribution)</label>
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="CPP(In % Employer's Contribution)" name="cpp_employers_contribution" value="{{$ottx->cpp_employers_contribution}}"> 
+                                <input type="number" step="0.0001" class="form-control" id="inputFirstName" placeholder="CPP(In % Employer's Contribution)" name="cpp_employers_contribution" value="{{$ottx->cpp_employers_contribution}}"> 
                             </div>
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label" >Max Value</label>
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="Max Value" name="Max_Values_con" value="{{$ottx->Max_Values_con}}"> 
+                                <input type="number" step="0.0001" class="form-control" id="inputFirstName" placeholder="Max Value" name="Max_Values_con" value="{{$ottx->Max_Values_con}}"> 
                             </div>
+                        </div>
                             {{-- <div class="col-md-2" style="margin-top: 8.6vh;text-align: left;" >
                                 <button type="submit" class="btn btn-primary px-3">Update</button>
                             </div> --}}
                             {{-- <div class="col-md-10"></div> --}}
+                        <div class="row mt-2">
                             <div class="col-md-3">
                                 <label for="inputFirstName" class="form-label" >EI (In % Employee Contribution)</label>
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="EI (In % Employee Contribution)" name="EI_Employee_Contribution" value="{{$ottx->EI_Employee_Contribution}}"> 
+                                <input type="number" step="0.0001" class="form-control" id="inputFirstName" placeholder="EI (In % Employee Contribution)" name="EI_Employee_Contribution" value="{{$ottx->EI_Employee_Contribution}}"> 
                             </div>
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label" >Max Value</label>
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="Max Value" name="Max_Value_Ei" value="{{$ottx->Max_Value_Ei}}"> 
+                                <input type="number" step="0.0001" class="form-control" id="inputFirstName" placeholder="Max Value" name="Max_Value_Ei" value="{{$ottx->Max_Value_Ei}}"> 
                             </div>
+                        </div>
                             {{-- <div class="col-md-2" style="margin-top: 8.6vh;text-align: left;" >
                                 <button type="submit" class="btn btn-primary px-3">Update</button>
                             </div> --}}
                             {{-- <div class="col-md-10" ></div> --}}
+                        <div class="row mt-2">
                             <div class="col-md-3">
                                 <label for="inputFirstName" class="form-label" >EI (In % Employer's Contribution)</label>
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="EI (In % Employer's Contribution)" name="ei_employers_contribution" value="{{$ottx->ei_employers_contribution}}"> 
+                                <input type="number" step="0.0001" class="form-control" id="inputFirstName" placeholder="EI (In % Employer's Contribution)" name="ei_employers_contribution" value="{{$ottx->ei_employers_contribution}}"> 
                             </div>
                           
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label" >Max Value</label>
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="Max Value" name="max_value_emprs" value="{{$ottx->max_value_emprs}}"> 
+                                <input type="number" step="0.0001" class="form-control" id="inputFirstName" placeholder="Max Value" name="max_value_emprs" value="{{$ottx->max_value_emprs}}"> 
                             </div>
+                        </div>
                             <!-- <div class="col-md-1">
                                 <label for="inputFirstName" class="form-label">PT</label>
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="PT"> 
+                                <input type="number" step="0.0001" class="form-control" id="inputFirstName" placeholder="PT"> 
                             </div>
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label">Fedral Tax</label>
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="Fedral Tax"> 
+                                <input type="number" step="0.0001" class="form-control" id="inputFirstName" placeholder="Fedral Tax"> 
                             </div> -->
                         
                             <div class="col-md-2" style="margin-top: 6.5vh;text-align: left;" >

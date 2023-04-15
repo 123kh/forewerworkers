@@ -8,12 +8,12 @@ $(function() {
 			$('#example4').DataTable();
 			$('#example5').DataTable();
 
-			
-		  } );
-		  
-		  
-		  
-		  $(document).ready(function() {
+			 $('.without_paginataion_table').dataTable({
+				"bInfo": false, //Dont display info e.g. "Showing 1 to 4 of 4 entries"
+				"paging": false,//Dont want paging                
+				"bPaginate": false,//Dont want paging      
+			});
+		 
 			var table = $('#example2').DataTable( {
 				lengthChange: false,
 				buttons: [ 'copy', 'excel', 'pdf', 'print']

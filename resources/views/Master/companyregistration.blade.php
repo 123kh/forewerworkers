@@ -131,19 +131,19 @@
                             </div>
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label">Straight pay hours</label>
-                                <input type="number" step="0.1" class="form-control" id="straight" placeholder="Straight Pay hours" > 
+                                <input type="number" step="0.001" class="form-control" id="straight" placeholder="Straight Pay hours" > 
                             </div>
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label">Overtime 1.5 pay hours</label>
-                                <input type="number" step="0.1" class="form-control" id="overtime1" placeholder="Overtime 1.5 pay hours"> 
+                                <input type="number" step="0.001" class="form-control" id="overtime1" placeholder="Overtime 1.5 pay hours"> 
                             </div>
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label">Overtime 2.0 pay hours</label>
-                                <input type="number" step="0.1" class="form-control" id="overtime2" placeholder="Overtime 2.0 pay hours" > 
+                                <input type="number" step="0.001" class="form-control" id="overtime2" placeholder="Overtime 2.0 pay hours" > 
                             </div>
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label">Night hours pay</label>
-                                <input type="number" step="0.1" class="form-control" id="nighthours" placeholder="Night hours pay" > 
+                                <input type="number" step="0.001" class="form-control" id="nighthours" placeholder="Night hours pay" > 
                             </div>
                             <div class="col-md-2" style="margin-top: 6vh;" >
                                 <button type="button" class="btn btn-primary px-3 add-row">ADD</button>

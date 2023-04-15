@@ -33,8 +33,9 @@
 <!--start page wrapper -->
 <div class="page-wrapper">
     <div class="page-content">
+        @include('alerts')
         <div class="row">
-            <div class="col-md-6 mx-auto">
+            <div class="col-md-6 offset-md-3">
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title d-flex align-items-center">
@@ -42,13 +43,12 @@
                             <h5 class="mb-0 text-primary">Federal Tax Rebate</h5>
                         </div>
                         <hr>
-                        <form class="row g-2" method="post" action="{{route('master.create_provitialslab')}}">	
+                        <form class="row g-2" method="post" action="{{route('master.create_fedraltaxrebate')}}">	
                             @csrf
                         
-                            <div class="col-md-3" ></div>
-                            <div class="col-md-4">
+                            <div class="col-md-6 offset-md-2">
                                 <label for="inputFirstName" class="form-label">Value</label>
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="Value" name="value"> 
+                                <input type="number" value="{{$data->value}}" step="0.001" class="form-control" id="inputFirstName" placeholder="Value" name="value"> 
                             </div>
                             
                             <div class="col-md-2" style="margin-top: 6vh;text-align: left;" >

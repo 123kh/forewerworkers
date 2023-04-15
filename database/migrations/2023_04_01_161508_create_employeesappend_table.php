@@ -20,7 +20,7 @@ class CreateEmployeesappendTable extends Migration
             $table->string('overtime_hours1');
             $table->string('overtime_hours2');
             $table->string('night_hours_pay');
-            $table->string('company_register_id');
+            $table->string('company_id');
             $table->timestamps();
         });
     }

@@ -33,6 +33,7 @@
 	<!--start page wrapper -->
     <div class="page-wrapper">
         <div class="page-content">
+            @include('alerts')
             <div class="row">
                 <div class="col-md-12 mx-auto">
                     <div class="card">

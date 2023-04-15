@@ -84,8 +84,8 @@
                                         
                                  
                                     <tr>
-                                        <td>{{$loop->index+1}}</td>
-                                        <td>{{$locat->location}}</td>
+                                        <td>{{$loop->iteration}}</td>
+                                        <td>{{ucWords($locat->location)}}</td>
                                         <!-- <td>9579915551</td> -->
                                         <td>
                                             <a href="{{route('master.edit_location',$locat->id)}}"><button type="button" class="btn1 btn-outline-primary"><i
@@ -120,8 +120,8 @@
                                         
                                   
                                     <tr>
-                                        <td>{{$loop->index+1}}</td>
-                                        <td>{{$cats->add_category}}</td>
+                                        <td>{{$loop->iteration}}</td>
+                                        <td>{{ucWords($cats->add_category)}}</td>
                                         <!-- <td>9579915551</td> -->
                                         
                                         <td style="background-color:#fff;">

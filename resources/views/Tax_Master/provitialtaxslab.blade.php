@@ -33,6 +33,7 @@
 	<!--start page wrapper -->
     <div class="page-wrapper">
         <div class="page-content">
+            @include('alerts')
             <div class="row">
                 <div class="col-md-12 mx-auto">
                     <div class="card">
@@ -48,18 +49,18 @@
                                 
                                 <div class="col-md-2">
                                     <label for="inputFirstName" class="form-label">Min Value</label>
-                                    <input type="text" class="form-control" id="inputFirstName" placeholder="Min Value" name="min_values"> 
+                                    <input type="number" step="0.001" class="form-control" id="inputFirstName" placeholder="Min Value" name="min_values"> 
                                 </div>
                                 
                                 <div class="col-md-2">
                                     <label for="inputFirstName" class="form-label">Max Value</label>
-                                    <input type="text" class="form-control" id="inputFirstName" placeholder="Max Value" name="max_values"> 
+                                    <input type="number" step="0.001" class="form-control" id="inputFirstName" placeholder="Max Value" name="max_values"> 
                                 </div>
                                 
                                 <!-- <div class="col-md-2" style="margin-top: 6vh;text-align: center;" ></div> -->
                                 <div class="col-md-2">
                                     <label for="inputFirstName" class="form-label">Percentage of Tax</label>
-                                    <input type="text" class="form-control" id="inputFirstName" placeholder="Percentage of Tax" name="percentage_of_taxs"> 
+                                    <input type="number" step="0.001" class="form-control" id="inputFirstName" placeholder="Percentage of Tax" name="percentage_of_taxs"> 
                                 </div>
                                 
                                 <div class="col-md-1" style="margin-top: 6vh;text-align: left;" >

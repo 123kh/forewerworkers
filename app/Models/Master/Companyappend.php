@@ -15,7 +15,7 @@ class Companyappend extends Model
     'overtime_hours1',
     'overtime_hours2',
     'night_hours_pay',
-    'company_register_id'];
+    'company_id'];
 
 
 }

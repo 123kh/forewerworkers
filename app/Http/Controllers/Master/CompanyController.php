@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 class CompanyController extends Controller
 {
     public function index(){
-        $cat=Category::orderby('add_category','asc')->get();
+        $cat=get_categories();
         // $ca=Category::all();
         return view('Master.companyregistration',['cat'=>$cat]);
     }
@@ -73,7 +73,7 @@ class CompanyController extends Controller
     
         for($i=0;$i<count($request->select_categories); $i++){
         $comappend=new Companyappend;
-        $comappend->company_register_id=$insert_id;
+        $comappend->company_id=$insert_id;
         $comappend->select_categories=$request->select_categories[$i];
         $comappend->straight_pay_hours=$request->straight_pay_hours[$i];
         $comappend->overtime_hours1=$request->overtime_hours1[$i];
