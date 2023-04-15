@@ -3,6 +3,7 @@
 use App\Http\Controllers\AssignjobController;
 use App\Http\Controllers\Master\CompanyController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\Master\EmployeeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Master\LocationController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Tax_Master\FedraltaxrebateController;
 use App\Http\Controllers\Tax_Master\OtherTaxController;
 use App\Http\Controllers\Tax_Master\ProvitialtaxSlabController;
 use App\Http\Controllers\TimesheetController;
+use App\Http\Controllers\PayrollController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,13 +31,18 @@ Route::get('/', function () {
 });
 
 
+Route::get('test-mail',[MailController::class,'index']);
 Route::get('dashboards',[DashboardController::class,'index'])->name('dashboards');
 
 //Assign Job
 Route::get('assignjob',[AssignjobController::class,'index'])->name('assignjob');
+Route::get('edit-assignjob/{id}',[AssignjobController::class,'edit_assignjob'])->name('edit-assignjob');
+Route::post('insert_assign_job',[AssignjobController::class,'insert_assign_job'])->name('insert_assign_job');
+Route::post('update_assign_job',[AssignjobController::class,'update_assign_job'])->name('update_assign_job');
+Route::get('delete-assignjob/{id}',[AssignjobController::class,'delete_assignjob'])->name('delete-assignjob');
 
-//Time Sheet
-Route::get('timesheet',[TimesheetController::class,'index'])->name('timesheet');
+Route::post('reassign_job',[AssignjobController::class,'reassign_job'])->name('reassign_job');
+
 
                         //...............Master...............//
 //Location
@@ -89,8 +96,15 @@ Route::get('master/destroy_provitialslab/{id}',[ProvitialtaxSlabController::clas
 
 //fedrebart
 Route::get('taxmaster/fedraltaxrebate',[FedraltaxrebateController::class,'index'])->name('taxmaster.fedralrebate');
-Route::post('master/create_provitialslab',[FedraltaxrebateController::class,'create_provitialslab'])->name('master.create_provitialslab');
+Route::post('master/create_fedraltaxrebate',[FedraltaxrebateController::class,'create_fedraltaxrebate'])->name('master.create_fedraltaxrebate');
 
 //othertax
 Route::get('taxmaster/othertax',[OtherTaxController::class,'index'])->name('taxmaster.othertax');
 Route::post('master/update_othertax',[OtherTaxController::class,'update_othertax'])->name('master.update_othertax');
+
+
+//Time Sheet
+Route::get('timesheet',[TimesheetController::class,'index'])->name('timesheet');
+
+//PayRoll
+Route::get('payroll',[PayrollController::class,'index'])->name('payroll');

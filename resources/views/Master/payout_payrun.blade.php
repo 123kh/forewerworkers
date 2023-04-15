@@ -4,6 +4,8 @@
 	<!--start page wrapper -->
     <div class="page-wrapper">
         <div class="page-content">
+        @include('alerts')
+
             <div class="col-md-12">
                 <div class="row">
 
@@ -119,7 +121,7 @@
                                     <tbody>
                                         @foreach ($payrun as $pyr)
                                         <tr>
-                                            <td>{{$loop->index+1}}</td>
+                                            <td>{{$loop->iteration}}</td>
                                             <td>{{$pyr->add_payrun}}</td>
                                             <td>{{$pyr->no_of_days}}</td>
                                             <td style="background-color: #fff;">

@@ -9,7 +9,13 @@ class Companyappend extends Model
 {
     use HasFactory;
     protected $table="companysregsappend";
-    protected $fillable=['select_categories','straight_pay_hours','overtime_hours1','overtime_hours2','night_hours_pay','company_register_id'];
+    protected $fillable=[
+        'select_categories',
+    'straight_pay_hours',
+    'overtime_hours1',
+    'overtime_hours2',
+    'night_hours_pay',
+    'company_id'];
 
 
 }

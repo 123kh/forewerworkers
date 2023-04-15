@@ -9,5 +9,7 @@ class Payrun extends Model
 {
     use HasFactory;
     protected $table="payrun";
-    protected $fillable=['add_payrun','no_of_days'];
+    protected $fillable=[
+        'add_payrun',
+    'no_of_days'];
 }

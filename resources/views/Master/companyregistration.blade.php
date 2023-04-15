@@ -32,6 +32,8 @@
 <!--start page wrapper -->
 <div class="page-wrapper">
     <div class="page-content">
+        @include('alerts')
+
         <div class="row">
             <div class="col-md-12 mx-auto">
                 <div class="card">
@@ -118,30 +120,30 @@
                             </div> -->
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label">Select Categories</label>
-                                <select class="form-select mb-3" aria-label="Default select example" id="category" name="select_categories">
+                                <select class="form-select mb-3" aria-label="Default select example" id="category" >
                                     <option value="">Select</option>
                                     @foreach ($cat as $cat)
                                     <option value="{{ $cat->id }}">
-                                       {{$cat->add_category}} </option>
+                                       {{ucWords($cat->add_category)}} </option>
                                     @endforeach
                                    
                                 </select>
                             </div>
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label">Straight pay hours</label>
-                                <input type="text" class="form-control" id="straight" placeholder="Straight Pay hours" name="straight_pay_hours"> 
+                                <input type="number" step="0.001" class="form-control" id="straight" placeholder="Straight Pay hours" > 
                             </div>
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label">Overtime 1.5 pay hours</label>
-                                <input type="text" class="form-control" id="overtime1" placeholder="Overtime 1.5 pay hours" name="overtime_hours1"> 
+                                <input type="number" step="0.001" class="form-control" id="overtime1" placeholder="Overtime 1.5 pay hours"> 
                             </div>
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label">Overtime 2.0 pay hours</label>
-                                <input type="text" class="form-control" id="overtime2" placeholder="Overtime 2.0 pay hours" name="overtime_hours2"> 
+                                <input type="number" step="0.001" class="form-control" id="overtime2" placeholder="Overtime 2.0 pay hours" > 
                             </div>
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label">Night hours pay</label>
-                                <input type="text" class="form-control" id="nighthours" placeholder="Night hours pay" name="night_hours_pay"> 
+                                <input type="number" step="0.001" class="form-control" id="nighthours" placeholder="Night hours pay" > 
                             </div>
                             <div class="col-md-2" style="margin-top: 6vh;" >
                                 <button type="button" class="btn btn-primary px-3 add-row">ADD</button>
@@ -220,15 +222,11 @@
                     var nighthours = $('#nighthours').val();
                
                     var markup =
-            
-                            '<tr><td><input type="text" name="select_categories[]" required="" style="border:none; width: 100%;" value="' + category + '"></td><td><input type="text" name="straight_pay_hours[]" required="" style="border:none; width: 100%;" value="' + straight + '"></td><td><input type="text" name="overtime_hours1[]" required="" style="border:none; width: 100%;" value="' + overtime1 + '"></td><td><input type="text" name="overtime_hours2[]" style="border:none; width: 100%;" value="' +
+                            '<tr><td><input type="hidden" value="'+$('#category').val()+'" name="select_categories[]" ><input type="text"  style="border:none; width: 100%;" value="' + category + '"></td><td><input type="text" name="straight_pay_hours[]" required="" style="border:none; width: 100%;" value="' + straight + '"></td><td><input type="text" name="overtime_hours1[]" required="" style="border:none; width: 100%;" value="' + overtime1 + '"></td><td><input type="text" name="overtime_hours2[]" style="border:none; width: 100%;" value="' +
                             overtime2 +
                             '"></td><td><input type="text" name="night_hours_pay[]" required="" style="border:none; width: 100%" value="' + nighthours + '"></td><td><button type="button" class="btn1 btn-outline-danger delete-row"><i class="bx bx-trash me-0"></i></button></td></tr>';
-            
-            
                            
                         $(".add_more").append(markup);
-              
                        $('#category').val('');
                        $('#straight').val('');
                        $('#overtime1').val('');

@@ -32,13 +32,14 @@
 <!--start page wrapper -->
 <div class="page-wrapper">
     <div class="page-content">
+		@include('alerts')
         <div class="row">
             <div class="col-md-12 mx-auto">
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title d-flex align-items-center">
                     
-                            <h5 class="mb-0 text-primary">Federal Tax Slab</h5>
+                            <h5 class="mb-0 text-primary">Edit Federal Tax Slab</h5>
                         </div>
                         <hr>
                         <form class="row g-2" action="{{route('master.update_fedralslab')}}" method="post">

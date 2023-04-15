@@ -44,40 +44,25 @@
 					<hr/> -->
 					<div class="card">
 						<div class="card-body">
-							<ul class="nav nav-tabs nav-success" role="tablist">
-								<li class="nav-item" role="presentation">
-									<a class="nav-link active" data-bs-toggle="tab" href="#successhome" role="tab" aria-selected="true">
-										<div class="d-flex align-items-center">
-											<!-- <div class="tab-icon"><i class='bx bx-home font-18 me-1'></i>
-											</div> -->
-											<div class="tab-title">Timesheet</div>
-										</div>
-									</a>
-								</li>
-								<li class="nav-item" role="presentation">
-									<a class="nav-link" data-bs-toggle="tab" href="#successprofile" role="tab" aria-selected="false">
-										<div class="d-flex align-items-center">
-											<!-- <div class="tab-icon"><i class='bx bx-user-pin font-18 me-1'></i>
-											</div> -->
-											<div class="tab-title">Payroll</div>
-										</div>
-									</a>
-								</li>
+							<div class="card-title d-flex align-items-center">
+
+                                <h5 class="mb-0 text-primary">Timesheet</h5>
+                            </div>
+                            <hr>
 							
-							</ul>
 							<div class="tab-content py-3">
-								<form class="row g-2">
+								<form class="row g-2" action="{{route('timesheet')}}">
 									<div class="col-md-2">
 										<label for="inputFirstName" class="form-label">From Date</label>
-										<input type="date" class="form-control" id="inputFirstName" placeholder="Address"> 
+										<input name="from_date" type="date" class="form-control" id="inputFirstName" placeholder="Address"> 
 									</div> 
 									<div class="col-md-2">
 										<label for="inputFirstName" class="form-label">To Date</label>
-										<input type="date" class="form-control" id="inputFirstName" placeholder="Address"> 
+										<input name="to_date" type="date" class="form-control" id="inputFirstName" placeholder="Address"> 
 									</div> 
 									<div class="col-md-2">
 										<label for="inputFirstName" class="form-label">Select Company</label>
-										<select class="form-select mb-3" aria-label="Default select example">
+										<select name="company_id" class="form-select mb-3" aria-label="Default select example">
 											<option selected>ABC</option>
 											<option value="1">PQRS</option>
 											<option value="2">MNPIO</option>
@@ -86,7 +71,7 @@
 									</div>
 									<div class="col-md-2">
 										<label for="inputFirstName" class="form-label">Select Employee</label>
-										<select class="form-select mb-3" aria-label="Default select example">
+										<select name="employee_id" class="form-select mb-3" aria-label="Default select example">
 											<option selected>All</option>
 											<option >Lorem</option>
 											<option value="1">Javier</option>

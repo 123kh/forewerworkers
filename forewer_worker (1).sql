@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `companysregsappend` (
   `overtime_hours1` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `overtime_hours2` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `night_hours_pay` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `company_register_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `company_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `companysregsappend` (
 -- Dumping data for table `companysregsappend`
 --
 
-INSERT INTO `companysregsappend` (`id`, `select_categories`, `straight_pay_hours`, `overtime_hours1`, `overtime_hours2`, `night_hours_pay`, `company_register_id`, `created_at`, `updated_at`) VALUES
+INSERT INTO `companysregsappend` (`id`, `select_categories`, `straight_pay_hours`, `overtime_hours1`, `overtime_hours2`, `night_hours_pay`, `company_id`, `created_at`, `updated_at`) VALUES
 (3, 'Part-time', '55', '55', '6', '6', '4', '2023-04-01 10:33:43', '2023-04-01 10:33:43'),
 (4, 'Part-time', '55', '5', '5', '5', '4', '2023-04-01 10:33:43', '2023-04-01 10:33:43'),
 (5, 'Part-time', 'xfbh', 'd', 'g', '65', '1', '2023-04-01 11:50:34', '2023-04-01 11:50:34'),
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `employeesappend` (
   `overtime_hours1` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `overtime_hours2` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `night_hours_pay` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `company_register_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `company_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
