@@ -13,11 +13,13 @@ class AssignjobController extends Controller
         $paginate_length=10;
         if(isset($request->paginate_length) && $request->paginate_length!=null)
         $paginate_length=$request->paginate_length;
-        $location=get_location();
-        $company=get_company();
-        $employee=get_employee();
+        $locations=get_location();
+        $companies=get_company();
+        $employees=get_employee();
         $all_jobs=AssignJobModel::orderby('id','desc')->paginate($paginate_length);
-        return view('assign-job.create',compact('location','company','employee','all_jobs'));
+        $payrun=DB::table('payrun')->orderby('no_of_days','desc')->select('id','add_payrun')->get();
+
+        return view('assign-job.create',compact('locations','companies','employees','all_jobs','payrun'));
     }
 
     public function insert_assign_job(Request $request){
@@ -33,18 +35,21 @@ class AssignjobController extends Controller
                 'job_start_date' => 'required',
                 'job_end_date' => 'required',
                 'expected_hour' => 'required',
+                'payrun_id' => 'required',
               
             ],
             [
                 'date.required' => 'Please select date.',
                 'location_id.required' => 'Please select location.',
-                'company_id..required' => 'Please select company.',
+                'company_id.required' => 'Please select company.',
                 'employee_id.required' => 'Please select employee.',
                 'job_title.required' => 'Please enter job title.',
-                'job_description..required' => 'Please enter jon description.',
+                'job_description.required' => 'Please enter jon description.',
                 'job_start_date.required' => 'Please select job start date.',
                 'job_end_date.required' => 'Please select job end date.',
-                'expected_hour..required' => 'Please enter expected hour.',
+                'expected_hour.required' => 'Please enter expected hour.',
+                'payrun_id.required' => 'Please select Payrun Type.'
+
             ]);
             if ($validator->fails()) {
                 $errors = '';
@@ -68,6 +73,8 @@ class AssignjobController extends Controller
                 'job_end_date'=>$request->job_end_date,
                 'expected_hour'=>$request->expected_hour,
                 'status'=>$status,
+                'payrun_id'=> $request->payrun_id
+
             ]);
             return back()->with(['success'=>'Date inserted successfully.']);
 
@@ -79,8 +86,9 @@ class AssignjobController extends Controller
         $employee=DB::table('employees')->orderby('employee_name','asc')->select('id','employee_name','Email')->get();
         $edit_job=AssignJobModel::find($request->id);
         $all_jobs=AssignJobModel::orderby('id','desc')->paginate(10);
+        $payrun=DB::table('payrun')->orderby('no_of_days','desc')->select('id','add_payrun')->get();
 
-        return view('assign-job.edit',compact('location','company','employee','edit_job','all_jobs'));
+        return view('assign-job.edit',compact('location','company','employee','edit_job','all_jobs','payrun'));
     }
     public function update_assign_job(Request $request){
         $validator = Validator::make(
@@ -95,18 +103,20 @@ class AssignjobController extends Controller
                 'job_start_date' => 'required',
                 'job_end_date' => 'required',
                 'expected_hour' => 'required',
+                'payrun_id' => 'required',
               
             ],
             [
                 'date.required' => 'Please select date.',
                 'location_id.required' => 'Please select location.',
-                'company_id..required' => 'Please select company.',
+                'company_id.required' => 'Please select company.',
                 'employee_id.required' => 'Please select employee.',
                 'job_title.required' => 'Please enter job title.',
-                'job_description..required' => 'Please enter jon description.',
+                'job_description.required' => 'Please enter jon description.',
                 'job_start_date.required' => 'Please select job start date.',
                 'job_end_date.required' => 'Please select job end date.',
-                'expected_hour..required' => 'Please enter expected hour.',
+                'expected_hour.required' => 'Please enter expected hour.',
+                'payrun_id.required' => 'Please select Payrun Type.'
             ]);
             if ($validator->fails()) {
                 $errors = '';
@@ -130,7 +140,7 @@ class AssignjobController extends Controller
                 'job_end_date'=>$request->job_end_date,
                 'expected_hour'=>$request->expected_hour,
                 'status'=>$status,
-                
+                'payrun_id'=> $request->payrun_id
             ]);
             return redirect()->route('assignjob')->with(['success'=>'Date updated successfully.']);
     }
@@ -149,8 +159,6 @@ class AssignjobController extends Controller
             
         ]);
         return redirect()->back()->with(['success'=>'Job Reassigned successfully.']);
-
-
     }
 
 public function delete_assignjob(Request $request){
@@ -158,4 +166,5 @@ public function delete_assignjob(Request $request){
     return back()->with(['delete'=>'Data deleted successfully.']);
 
 }
+
 }

@@ -19,6 +19,7 @@ class Employee extends Model
     'ID_proof',
     'address_proof',
     'DOB',
+    'payrun_id',
     'sin',
     'bcdl',
     'bank_name',

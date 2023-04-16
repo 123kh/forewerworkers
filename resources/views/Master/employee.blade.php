@@ -98,6 +98,7 @@
                                 <label for="inputFirstName" class="form-label">DOB</label>
                                 <input type="date" class="form-control" id="inputFirstName" placeholder="DOB" name="DOB"> 
                             </div>
+                           
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label">SIN</label>
                                 <input type="text" class="form-control" id="inputFirstName" placeholder="SIN" name="sin"> 

@@ -171,6 +171,18 @@
                                     <input type="date" value="{{ $edit_job->job_end_date }}" name="job_end_date"
                                         class="form-control" id="inputFirstName" placeholder="Address">
                                 </div>
+                                <div class="col-md-2">
+                                    <label for="inputFirstName" class="form-label">Select Payrun Type</label>
+                                    <select name="payrun_id" class="single-select mb-3" aria-label="Default select example">
+                                        <option value="" selected>Select Payrun Type</option>
+                                        @foreach ($payrun as $payrun)
+                                            <option value="{{ $payrun->id }}"
+                                                @if ($payrun->id == $edit_job->payrun_id) selected @endif>{{ ucWords($payrun->add_payrun) }}
+                                            </option>
+                                        @endforeach
+    
+                                    </select>
+                                </div>
                                 <div class="col-md-3">
                                     <label for="inputFirstName" class="form-label">Expected Hours For Completion</label>
                                     <input type="number" step="0.001" value="{{ $edit_job->expected_hour }}"

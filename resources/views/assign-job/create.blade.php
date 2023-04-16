@@ -23,11 +23,12 @@
                                     <input type="date" name="date" class="form-control" id="inputFirstName"
                                         placeholder="Address">
                                 </div>
+
                                 <div class="col-md-2">
                                     <label for="inputFirstName" class="form-label">Select Location</label>
                                     <select name="location_id" class="single-select mb-3" aria-label="Default select example">
                                         <option value="" selected>Select Location</option>
-                                        @foreach ($location as $location)
+                                        @foreach ($locations as $location)
                                             <option value="{{ $location->id }}">{{ ucWords($location->location) }}</option>
                                         @endforeach
 
@@ -35,13 +36,11 @@
                                     </select>
                                 </div>
 
-
-
                                 <div class="col-md-2">
                                     <label for="inputFirstName" class="form-label">Select Company</label>
                                     <select name="company_id" class="single-select mb-3" aria-label="Default select example">
                                         <option value="" selected>Select Company</option>
-                                        @foreach ($company as $company)
+                                        @foreach ($companies as $company)
                                             <option value="{{ $company->id }}">{{ ucWords($company->company_name) }}
                                             </option>
                                         @endforeach
@@ -52,7 +51,7 @@
                                     <label for="inputFirstName" class="form-label">Select Employee</label>
                                     <select name="employee_id" class="single-select mb-3" aria-label="Default select example">
                                         <option value="" selected>Select Employee</option>
-                                        @foreach ($employee as $employee)
+                                        @foreach ($employees as $employee)
                                             <option value="{{ $employee->id }}">{{ ucWords($employee->employee_name) }}
                                                 ({{ $employee->Email }})
                                             </option>
@@ -82,6 +81,17 @@
                                     <label for="inputFirstName" class="form-label">Job End Date</label>
                                     <input type="date" name="job_end_date" class="form-control" id="inputFirstName"
                                         placeholder="Address">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="inputFirstName" class="form-label">Select Payrun Type</label>
+                                    <select name="payrun_id" class="single-select mb-3" aria-label="Default select example">
+                                        <option value="" selected>Select Payrun Type</option>
+                                        @foreach ($payrun as $payrun)
+                                            <option value="{{ $payrun->id }}">{{ ucWords($payrun->add_payrun) }}
+                                            </option>
+                                        @endforeach
+    
+                                    </select>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="inputFirstName" class="form-label">Expected Hours For Completion</label>
@@ -192,6 +202,16 @@
                                                 <label class="badge bg-success" for="">Completed</label>
                                             @elseif($jobs->status == 0)
                                                 <label class="badge bg-danger" for="">Rejected</label>
+                                                <button job_id="{{ $jobs->id }}"
+                                                    location_id="{{ $jobs->location_id }}"
+                                                    company_id="{{ $jobs->company_id }}"
+                                                    employee_id="{{ $jobs->employee_id }}"
+                                                    job_title="{{ $jobs->job_title }}"
+                                                    job_description="{{ $jobs->job_description }}"
+                                                    date="{{ $jobs->date }}" type="button"
+                                                    class="badge bg-primary reassign_model" title="Reassign"><i
+                                                        class="fadeIn animated bx bx-transfer"></i>
+                                                    Reassign</button>
                                             @endif
 
                                         </td>
@@ -218,4 +238,6 @@
         </div>
     </div>
     <!--end page wrapper -->
+
+    @include('assign-job.reassignmodal')
 @stop
