@@ -1,33 +1,7 @@
 @extends('layout')
 @section('content')
-	<style>
-		.popup-container {
-	  position: relative;
-	}
-	.popup-content {
-	  display: none;
-	  position: absolute;
-	  z-index: 1;
-	  top: 100%;
-	  left: 0;
-	  background-color: #F9F9F9;
-	  padding: 10px;
-	  border: 1px solid #ccc;
-	}
-	.popup-container:hover .popup-content {
-	  display: block;
-	}
-	.popup-btn {
-	  /* background-color: #f2f2f2; */
-	  color: black;
-	  border: none;
-	  padding: 10px;
-	  cursor: pointer;
-	}
-	.popup-btn:hover {
-	  background-color: #f2f2f2;
-	}
-	</style>
+@include('paginatecss')
+	
 
 		<!--start page wrapper -->
 		<div class="page-wrapper">
@@ -50,35 +24,63 @@
                             </div>
                             <hr>
 							
-							<div class="tab-content py-3">
 								<form class="row g-2" action="{{route('timesheet')}}">
 									<div class="col-md-2">
 										<label for="inputFirstName" class="form-label">From Date</label>
-										<input name="from_date" type="date" class="form-control" id="inputFirstName" placeholder="Address"> 
-									</div> 
+										<input name="from_date"
+											value="@if (app('request')->input('from_date')) {{ app('request')->input('from_date') }} @endif"
+											type="date" class="form-control" id="inputFirstName" placeholder="Address">
+									</div>
 									<div class="col-md-2">
 										<label for="inputFirstName" class="form-label">To Date</label>
-										<input name="to_date" type="date" class="form-control" id="inputFirstName" placeholder="Address"> 
-									</div> 
+										<input name="to_date"
+											value="@if (app('request')->input('to_date')) {{ app('request')->input('to_date') }} @endif"
+											type="date" class="form-control" id="inputFirstName" placeholder="Address">
+									</div>
+									<div class="col-md-2">
+										<label for="inputFirstName" class="form-label">Select Location</label>
+										<select name="location_id" class="single-select mb-3" aria-label="Default select example">
+											<option value="" selected>Select Location</option>
+											@foreach ($locations as $location)
+												<option value="{{ $location->id }}"
+													@if (app('request')->input('location_id') && app('request')->input('location_id') == $location->id) selected @endif">{{ ucWords($location->location) }}</option>
+											@endforeach
+	
+	
+										</select>
+									</div>
 									<div class="col-md-2">
 										<label for="inputFirstName" class="form-label">Select Company</label>
-										<select name="company_id" class="form-select mb-3" aria-label="Default select example">
-											<option selected>ABC</option>
-											<option value="1">PQRS</option>
-											<option value="2">MNPIO</option>
-											
+										<select name="company_id" class="single-select mb-3"
+											aria-label="Default select example">
+											<option value="" selected>Select Company</option>
+											@foreach ($companies as $company)
+												<option value="{{ $company->id }}"
+													@if (app('request')->input('company_id') && app('request')->input('company_id') == $company->id) selected @endif">
+													{{ ucWords($company->company_name) }}
+												</option>
+											@endforeach
+	
+	
 										</select>
 									</div>
 									<div class="col-md-2">
 										<label for="inputFirstName" class="form-label">Select Employee</label>
-										<select name="employee_id" class="form-select mb-3" aria-label="Default select example">
-											<option selected>All</option>
-											<option >Lorem</option>
-											<option value="1">Javier</option>
-											<option value="2">Diego</option>
-											
+										<select name="employee_id" class="single-select mb-3"
+											aria-label="Default select example">
+											<option value="" selected>Select Employee</option>
+											@foreach ($employees as $employee)
+												<option value="{{ $employee->id }}"
+													@if (app('request')->input('employee_id') && app('request')->input('employee_id') == $employee->id) selected @endif>
+													{{ ucWords($employee->employee_name) }}
+													({{ $employee->Email }})
+												</option>
+											@endforeach
+	
 										</select>
 									</div>
+									
+									
 									<div class="col-md-2" style="margin-top: 6vh;">
 										<button type="submit" class="btn btn-primary px-3" >Search</button>
 									</div>
@@ -89,9 +91,25 @@
 									  <p>This is the popup content!</p>
 									</div>
 								  </div> -->
-								<div class="tab-pane fade show active" id="successhome" role="tabpanel">
 									<div class="table-responsive">
-										<table id="example" class="table table-striped table-bordered">
+										<form action="">
+											<div class="row">
+												<div class="col-sm-12 col-md-6">
+													<div class="dataTables_length" id="example_length"><label>Show entries
+														<select
+																name="paginate_length"  aria-controls="example"
+																class="form-select form-select-sm paginate_length">
+																<option @if(app('request')->input('paginate_length')==10) selected @endif value="10">10</option>
+																<option @if(app('request')->input('paginate_length')==25) selected @endif value="25">25</option>
+																<option @if(app('request')->input('paginate_length')==50) selected @endif value="50">50</option>
+																<option @if(app('request')->input('paginate_length')==100) selected @endif value="100">100</option>
+															</select>
+														</label>
+													</div>
+												</div>
+											</div>
+										</form>
+										<table  class="table table-striped table-bordered without_paginataion_table">
 											<thead>
 												<tr>
 													<th>Sr. No.</th>
@@ -99,136 +117,60 @@
 													<th>Location</th>  
 													<th>Company</th>
 													<th>Employee</th>
-													<!-- <th>Job Title</th>
-													<th>Job Description</th>
-													<th>Job Start Date</th>
-													<th>Job End Date</th>
-													<th>Expected Hours For Complition</th>
-													<th>Expected Date & Time For Closing Job</th> -->
+													
 													<th>Pay/Hour</th>
 													<th>Approx Pay</th>
-													<th>Action</th>
+													{{-- <th>Action</th> --}}
 												</tr>
 											</thead>
 											<tbody>
+												@foreach ($all_jobs as $jobs)
 												<tr>
-													<td>1</td>
-													<td>12-2-2023</td>
-													<td>Canada</td>
-													<td>Workplace</td>
+													<td>{{ $loop->iteration }}</td>
+													<td>{{ $jobs->date }}</td>
+													<td>{{ $jobs->location_name }}</td>
+													<td>{{ $jobs->company_name }}</td>
 													<td>
-														<div class="popup-container">
-														<span class="popup-btn">Lorem</span>
-														<div class="popup-content">
-														  <p>Job Title: Snow Clean <br>Job Description: Snow Snow<br>
-														Start & End Dt: 12-3-2023 to 13-2-2023<br>
-														Expected Hours For Complition: 3Hr <br>
-														Expected Date & Time For Closing Job: 13-2-2023 12:09<br></p>
+
+														<div class="popover__wrapper">
+															<p>
+																{{ $jobs->employee_name }}
+															</p><a href="#">
+																<p class="popover__title">Job Information</p>
+															</a>
+			
+															<div class="popover__content">
+																<div class="modal-area">
+																	<p>Job Title: {{ $jobs->job_title }}
+																		<br>
+																		Job Description: {{ $jobs->job_description }}
+																		<br>
+																		Start & End Date: {{ $jobs->job_start_date }} to
+																		{{ $jobs->job_end_date }}
+																		<br>
+																		Expected Hours For Complition: {{ $jobs->expected_hour }}Hr
+																		<br>
+																		{{-- Expected Date & Time For Closing Job: 13-2-2023 12:09
+																		<br> --}}
+																	</p>
+																</div>
+															</div>
 														</div>
-													  </div>
 													</td>
 												
-													<td>46</td>
-													<td>7878</td>
-													<td>
+													<td>{{ $jobs->working_hours}}</td>
+													<td>{{ $jobs->approx_pay}}</td>
+													{{-- <td>
 														<button type="button" class="btn1 btn-outline-primary"><i class='bx bx-edit-alt me-0'></i></button>
 														<button type="button" class="btn1 btn-outline-success"><i class='fadeIn animated bx bx-check-double'></i></button> 
-													</td>
+													</td> --}}
 												</tr>
-												<tr>
-													<td>2</td>
-													<td>12-2-2023</td>
-													<td>Canada</td>
-													<td>Workplace</td>
-													<td><div class="popup-container">
-														<span class="popup-btn">Lorem</span>
-														<div class="popup-content">
-														  <p>Job Title: Snow Clean <br>Job Description: Snow Snow<br>
-														Start & End Dt: 12-3-2023 to 13-2-2023<br>
-														Expected Hours For Complition: 3Hr <br>
-														Expected Date & Time For Closing Job: 13-2-2023 12:09<br></p>
-														</div>
-													  </div></td>
-												
-													<td>46</td>
-													<td>7878</td>
-													<td>
-														<button type="button" class="btn1 btn-outline-primary"><i class='bx bx-edit-alt me-0'></i></button>
-														<button type="button" class="btn1 btn-outline-success"><i class='fadeIn animated bx bx-check-double'></i></button> 
-													</td>
-												</tr>
+												@endforeach
 											</tbody>
 										</table>
+										{!! $all_jobs->withQueryString()->links('pagination.custom') !!}
+
 									</div>
-								</div>
-								<div class="tab-pane fade" id="successprofile" role="tabpanel">
-									<div class="table-responsive">
-										<table id="example4" class="table table-striped table-bordered">
-											<thead>
-												<tr>
-													<th>Sr. No.</th>
-													<th>Date</th>
-													<th>Location</th>  
-													<th>Company</th>
-													<th>Employee</th>
-												
-													<th>Pay/Hour</th>
-													<th>Approx Pay</th>
-													<th style="background-color: #ffffff;">Action</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>1</td>
-													<td>12-2-2023</td>
-													<td>Canada</td>
-													<td>Workplace</td>
-													<td><div class="popup-container">
-														<span class="popup-btn">Lorem</span>
-														<div class="popup-content">
-														  <p>Job Title: Snow Clean <br>Job Description: Snow Snow<br>
-														Start & End Dt: 12-3-2023 to 13-2-2023<br>
-														Expected Hours For Complition: 3Hr <br>
-														Expected Date & Time For Closing Job: 13-2-2023 12:09<br></p>
-														</div>
-													  </div></td>
-												
-													<td>45</td>
-													<td>5000</td>
-													<td style="background-color: #ffffff;">
-														<button type="button" class="btn1 btn-outline-primary"><i class='bx bx-edit-alt me-0'></i></button>
-														<button type="button" class="btn1 btn-outline-success"><i class='fadeIn animated bx bx-check-double'></i></button> 
-													</td>
-												</tr>
-												<tr>
-													<td>2</td>
-													<td>12-2-2023</td>
-													<td>Canada</td>
-													<td>Workplace</td>
-													<td ><div class="popup-container">
-														<span class="popup-btn">Lorem</span>
-														<div class="popup-content">
-														  <p>Job Title: Snow Clean <br>Job Description: Snow Snow<br>
-														Start & End Dt: 12-3-2023 to 13-2-2023<br>
-														Expected Hours For Complition: 3Hr <br>
-														Expected Date & Time For Closing Job: 13-2-2023 12:09<br></p>
-														</div>
-													  </div></td>
-												
-													<td>45</td>
-													<td>5000</td>
-													<td style="background-color: #ffffff;">
-														<button type="button" class="btn1 btn-outline-primary"><i class='bx bx-edit-alt me-0'></i></button>
-														<button type="button" class="btn1 btn-outline-success"><i class='fadeIn animated bx bx-check-double'></i></button> 
-													</td>
-												</tr>
-											
-												
-											</tbody>
-										</table>
-									</div>
-								</div>
-							
 
 
 							</div>

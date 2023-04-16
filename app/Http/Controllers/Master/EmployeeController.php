@@ -3,18 +3,15 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
-use App\Models\Master\Category;
-use App\Models\Master\Location;
 use App\Models\Master\Employee;
 use App\Models\Master\Employeeappend;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use DB;
 class EmployeeController extends Controller
 {
     public function index(){
         $cat=get_categories();
-
         $loc=get_location();
         return view('Master.employee',['cat'=>$cat,'loc'=>$loc]);
     }
@@ -33,6 +30,8 @@ class EmployeeController extends Controller
                 'address_proof' => ['required'],
                 'DOB' => ['required'],
                 'sin' => ['required'],
+                'payrun_id' => ['required'],
+                
             ],
             [
                 'select_location.required' => 'Please enter location.',
@@ -44,7 +43,8 @@ class EmployeeController extends Controller
                 'ID_proof.required' => 'Please enter ID proof.',
                 'address_proof.required' => 'Please enter address proof.',
                 'DOB.required' => 'Please enter DOB.',
-                'sin.required' => 'Please enter sin.'
+                'sin.required' => 'Please enter sin.',
+                'payrun_id.required' => 'Please select Payrun Type.'
             ]);
             if ($validator->fails()) {
                 $errors = '';
@@ -81,6 +81,7 @@ class EmployeeController extends Controller
         $com->ID_proof='uploads/employee/'.$id_proof;;
         $com->address_proof='uploads/employee/'.$address_proof;
         $com->DOB=$request->get('DOB');
+        $com->payrun_id=$request->get('payrun_id');
         $com->sin=$request->get('sin');
         $com->bcdl=$request->get('bcdl');
         $com->bank_name=$request->get('bank_name');
