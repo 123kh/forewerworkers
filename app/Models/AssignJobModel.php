@@ -33,7 +33,7 @@ class AssignJobModel extends Model
 
     public function getLocationNameAttribute()
     {
-        return ucWords(Location::find($this->location_id)->location) . ' ,India';
+        return ucWords(Location::find($this->location_id)->location);
     }
 
     public function getEmployeeNameAttribute()

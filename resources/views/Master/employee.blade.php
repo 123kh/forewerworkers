@@ -52,7 +52,7 @@
                             </div> -->
                             <div class="col-md-3">
                                 <label for="inputFirstName" class="form-label">Select Location</label>
-                                <select class="form-select mb-3" aria-label="Default select example" name="select_location">
+                                <select class="form-select mb-3" aria-label="Default select example" name="location_id">
                                     <option value="">Select Location</option>
                                     @foreach ($loc as $location)
                                     <option value="{{ $location->id }}">
@@ -144,20 +144,13 @@
                             </div>
                             <div class="col-md-4" style="margin-top: 2vh;">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" name="Only_Straight_hours">
+                                    <input class="form-check-input" type="checkbox" value="1" id="Only_Straight_hours" name="Only_Straight_hours">
                                     <label class="form-check-label" for="flexCheckDefault">Only Straight hours applicable</label>
                                 </div>
                             </div>
                             <div class="col-md-4"></div>
                             
-                            <!-- <div class="col-md-2">
-                                <label for="inputFirstName" class="form-label">Select Location</label>
-                                <select class="form-select mb-3" aria-label="Default select example">
-                                    <option selected>Pune</option>
-                                    <option value="1">Nagpur</option>
-                                    <option value="2">Amravati</option>
-                                </select>
-                            </div> -->
+                           
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label">Select Categories</label>
                                 <select class="form-select mb-3" aria-label="Default select example" id="category" name="select_categories">
@@ -244,17 +237,74 @@
         </div>
     </div>
     
-
+    <hr/>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="example" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>Location</th>
+                            <th>Employee ID</th>  
+                        <th>Employee Name</th>
+                        <th>Address</th>
+                        <th>Contact Number</th>
+                        <th>Email</th>
+                        <th>ID Proof</th>
+                            <th>Address Proof</th>
+                            <th>DOB</th>
+                            <th>SIN</th>
+                            <th>BC DL/ID</th>
+                            <th>Bank Name</th>
+                            <th>Account Number</th>
+                            <th>Bank Details</th>
+                            <th style="background-color:#fff;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($employees as $employee)
+                        <tr>
+                           
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$employee->location_name}}</td>
+                            <td>{{$employee->employee_id}}</td>
+                            <td>{{$employee->employee_name}}</td>
+                            <td>{{$employee->address}}</td>
+                            <td>{{$employee->contact_number}}</td>
+                            <td>{{$employee->Email}}</td>
+                            <td>{{$employee->ID_proof}}</td>
+                            <td>{{$employee->address_proof}}</td>
+                            <td>{{$employee->DOB}}</td>
+                            <td>{{$employee->sin}}</td>
+                            <td>{{$employee->bcdl}}</td>
+                            <td>{{$employee->bank_name}}</td>
+                            <td>{{$employee->account_number}}</td>
+                            <td>{{$employee->bank_details}}</td>
+                            
+                            <td style="background-color:#fff;">
+                                <button type="button" class="btn1 btn-outline-primary"><i class='fadeIn animated bx bx-message-add' data-bs-toggle="modal" data-bs-target="#exampleLargeModal"></i></button>
+                                <button type="button" class="btn1 btn-outline-primary"><i class='bx bx-edit-alt me-0'></i></button>
+                                <button type="button" class="btn1 btn-outline-danger"><i class='bx bx-trash me-0'></i></button> 
+                            </td>
+                        </tr>
+                        @endforeach
+                    
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     
     <!--end page wrapper -->
 
-                        </form>
-
+   
                     </div>
 
                 </div>
-            </div>
-        </div>
+           
+        
         
 
         
@@ -264,7 +314,29 @@
 @section('js')
         <script>
             $(document).ready(function() {
-            
+                
+                $("#straight").keyup(function() {
+                    if(!$("#Only_Straight_hours").is(':checked')) {
+                        $("#overtime1").val(parseFloat($("#straight").val()*1.5));
+                    $("#overtime2").val(parseFloat($("#straight").val()*2));
+                    $("#nighthours").val(parseFloat($("#straight").val()*2));
+                    }
+                })
+
+                $("#Only_Straight_hours").change(function() {
+                    if(this.checked) {
+                        $("#overtime1,#overtime2,#nighthours").val('');
+                        $("#overtime1,#overtime2,#nighthours").attr('readonly','readonly');
+                        
+                    }else{
+                        $("#overtime1,#overtime2,#nighthours").removeAttr('readonly');
+                        if($("#straight").val()){
+                            $("#overtime1").val(parseFloat($("#straight").val()*1.5));
+                    $("#overtime2").val(parseFloat($("#straight").val()*2));
+                    $("#nighthours").val(parseFloat($("#straight").val()*2));
+                        }
+                    }
+                })
                 $(".add-row").click(function() {
                     var category = $('#category option:selected').text().trim();//trim function se space jata hai
                     var straight = $('#straight').val();
@@ -274,9 +346,9 @@
                
                     var markup =
             
-                            '<tr><td><input type="hidden" name="select_categories[]" value="'+$('#category').val()+'"><input type="text"  required="" style="border:none; width: 100%;" value="' + category + '"></td><td><input type="text" name="straight_pay_hours[]" required="" style="border:none; width: 100%;" value="' + straight + '"></td><td><input type="text" name="overtime_hours1[]" required="" style="border:none; width: 100%;" value="' + overtime1 + '"></td><td><input type="text" name="overtime_hours2[]" style="border:none; width: 100%;" value="' +
+                            '<tr><td><input type="hidden" name="select_categories[]" value="'+$('#category').val()+'"><input type="text"  style="border:none; width: 100%;" value="' + category + '"></td><td><input type="text" name="straight_pay_hours[]" style="border:none; width: 100%;" value="' + straight + '"></td><td><input type="text" name="overtime_hours1[]" style="border:none; width: 100%;" value="' + overtime1 + '"></td><td><input type="text" name="overtime_hours2[]" style="border:none; width: 100%;" value="' +
                             overtime2 +
-                            '"></td><td><input type="text" name="night_hours_pay[]" required="" style="border:none; width: 100%" value="' + nighthours + '"></td><td><button type="button" class="btn1 btn-outline-danger delete-row"><i class="bx bx-trash me-0"></i></button></td></tr>';
+                            '"></td><td><input type="text" name="night_hours_pay[]" style="border:none; width: 100%" value="' + nighthours + '"></td><td><button type="button" class="btn1 btn-outline-danger delete-row"><i class="bx bx-trash me-0"></i></button></td></tr>';
             
             
                            

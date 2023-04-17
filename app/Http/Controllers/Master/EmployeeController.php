@@ -13,14 +13,15 @@ class EmployeeController extends Controller
     public function index(){
         $cat=get_categories();
         $loc=get_location();
-        return view('Master.employee',['cat'=>$cat,'loc'=>$loc]);
+        $employees=Employee::orderby('id','desc')->get();
+        return view('Master.employee',compact('cat','loc','employees'));
     }
 
     public function create_employee(Request $request){
         $validator = Validator::make(
             $request->all(),
             [
-                'select_location' => ['required'],
+                'location_id' => ['required'],
                 'employee_id' => 'required|unique:employees',
                 'employee_name' => ['required'],
                 'address' => ['required'],
@@ -30,11 +31,10 @@ class EmployeeController extends Controller
                 'address_proof' => ['required'],
                 'DOB' => ['required'],
                 'sin' => ['required'],
-                'payrun_id' => ['required'],
                 
             ],
             [
-                'select_location.required' => 'Please enter location.',
+                'location_id.required' => 'Please enter location.',
                 'employee_id.required' => 'Please enter employee id.',
                 'employee_name.required' => 'Please enter employee name.',
                 'address.required' => 'Please enter address.',
@@ -44,7 +44,6 @@ class EmployeeController extends Controller
                 'address_proof.required' => 'Please enter address proof.',
                 'DOB.required' => 'Please enter DOB.',
                 'sin.required' => 'Please enter sin.',
-                'payrun_id.required' => 'Please select Payrun Type.'
             ]);
             if ($validator->fails()) {
                 $errors = '';
@@ -72,7 +71,7 @@ class EmployeeController extends Controller
              
             
         $com=new Employee;
-        $com->select_location=$request->get('select_location');
+        $com->location_id=$request->get('location_id');
         $com->employee_id=$request->get('employee_id');
         $com->employee_name=$request->get('employee_name');
         $com->address=$request->get('address');
@@ -81,7 +80,6 @@ class EmployeeController extends Controller
         $com->ID_proof='uploads/employee/'.$id_proof;;
         $com->address_proof='uploads/employee/'.$address_proof;
         $com->DOB=$request->get('DOB');
-        $com->payrun_id=$request->get('payrun_id');
         $com->sin=$request->get('sin');
         $com->bcdl=$request->get('bcdl');
         $com->bank_name=$request->get('bank_name');
