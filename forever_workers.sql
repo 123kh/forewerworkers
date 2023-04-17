@@ -148,7 +148,7 @@ INSERT INTO `companysregsappend` (`id`, `select_categories`, `straight_pay_hours
 DROP TABLE IF EXISTS `employees`;
 CREATE TABLE IF NOT EXISTS `employees` (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `select_location` int(11) DEFAULT NULL,
+  `location_id` int(11) DEFAULT NULL,
   `employee_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `employee_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `employees` (
 -- Dumping data for table `employees`
 --
 
-INSERT INTO `employees` (`id`, `select_location`, `employee_id`, `employee_name`, `address`, `contact_number`, `Email`, `ID_proof`, `address_proof`, `DOB`, `sin`, `bcdl`, `bank_name`, `account_number`, `bank_details`, `Job_Acceptreject`, `Show_Hide`, `Only_Straight_hours`, `created_at`, `updated_at`) VALUES
+INSERT INTO `employees` (`id`, `location_id`, `employee_id`, `employee_name`, `address`, `contact_number`, `Email`, `ID_proof`, `address_proof`, `DOB`, `sin`, `bcdl`, `bank_name`, `account_number`, `bank_details`, `Job_Acceptreject`, `Show_Hide`, `Only_Straight_hours`, `created_at`, `updated_at`) VALUES
 (10, 3, 'Wesley', 'Knox', 'Constance', 'Kaseem', 'hinimuxuz@mailinator.com', 'installation_tab.png', 'sytem_tab_cyprus.png', '2014-04-28', 'Nichole', 'Tatiana', 'Ainsley', 'Sonia', 'Incidunt qui anim e', '0', '1', '1', '2023-04-12 13:00:16', '2023-04-12 13:00:16'),
 (11, 3, 'Curran', 'Anika', 'Richard', 'Chase', 'hycyfozyda@mailinator.com', 'C:\\wamp64\\www\\webmedia-project\\forewerworkers\\public\\uploads/employee/Address1681324782.png', 'C:\\wamp64\\www\\webmedia-project\\forewerworkers\\public\\uploads/employee/Address1681324782.png', '2015-06-02', 'Holly', 'Inez', 'Madonna', 'Jackson', 'Sed non expedita in', '1', '0', '0', '2023-04-12 13:09:42', '2023-04-12 13:09:42'),
 (12, 3, 'Edward', 'Amaya', 'Charles', 'Otto', 'setyduhac@mailinator.com', 'uploads/employee/ID1681325049.png', 'uploads/employee/Address1681325049.png', '2002-07-22', 'Scarlet', 'Petra', 'Garth', 'Indigo', 'Laborum Aut eos nih', '1', '0', '0', '2023-04-12 13:14:09', '2023-04-12 13:14:09'),

@@ -40,7 +40,7 @@
                     <div class="card-body">
                         <div class="card-title d-flex align-items-center">
                     
-                            <h5 class="mb-0 text-primary">Company Resgistration </h5>
+                            <h5 class="mb-0 text-primary">Company Registration </h5>
 {{-- 
                             {{testfunction()}} --}}
                         </div>
@@ -74,7 +74,7 @@
                             </div>
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label">ZIP</label>
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="ZIP" name="zip"> 
+                                <input type="number" class="form-control" id="inputFirstName" placeholder="ZIP" name="zip"> 
                             </div> 
                             <div class="col-md-2">
                                 <label for="inputFirstName" class="form-label">Contact Person</label>
@@ -130,19 +130,19 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <label for="inputFirstName" class="form-label">Straight pay hours</label>
+                                <label for="inputFirstName" class="form-label">Straight pay/hours</label>
                                 <input type="number" step="0.001" class="form-control" id="straight" placeholder="Straight Pay hours" > 
                             </div>
                             <div class="col-md-2">
-                                <label for="inputFirstName" class="form-label">Overtime 1.5 pay hours</label>
+                                <label for="inputFirstName" class="form-label">Overtime 1.5 pay/hours</label>
                                 <input type="number" step="0.001" class="form-control" id="overtime1" placeholder="Overtime 1.5 pay hours"> 
                             </div>
                             <div class="col-md-2">
-                                <label for="inputFirstName" class="form-label">Overtime 2.0 pay hours</label>
+                                <label for="inputFirstName" class="form-label">Overtime 2.0 pay/hours</label>
                                 <input type="number" step="0.001" class="form-control" id="overtime2" placeholder="Overtime 2.0 pay hours" > 
                             </div>
                             <div class="col-md-2">
-                                <label for="inputFirstName" class="form-label">Night hours pay</label>
+                                <label for="inputFirstName" class="form-label">Night hours/pay</label>
                                 <input type="number" step="0.001" class="form-control" id="nighthours" placeholder="Night hours pay" > 
                             </div>
                             <div class="col-md-2" style="margin-top: 6vh;" >
@@ -159,10 +159,10 @@
                                                         {{-- <th scope="col">Sr.No.</th> --}}
                                                         <!-- <th scope="col">Selected Location</th> -->
                                                         <th scope="col">Selected Categories</th>
-                                                        <th scope="col">Straight pay hours</th>
-                                                        <th scope="col">Overtime 1.5 pay hours</th>
-                                                        <th scope="col">Overtime 2.0 pay hours</th>
-                                                        <th scope="col">Night hours pay</th>
+                                                        <th scope="col">Straight pay/hours</th>
+                                                        <th scope="col">Overtime 1.5 pay/hours</th>
+                                                        <th scope="col">Overtime 2.0 pay/hours</th>
+                                                        <th scope="col">Night hours pay/hours</th>
                                                         <th scope="col">Action</th>
                                                     </tr>
                                                 </thead>
@@ -204,7 +204,58 @@
                 </div>
             </div>
         </div>
-        
+        <hr/>
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table id="example" class="table table-striped table-bordered">
+								<thead>
+									<tr>
+										<th>Sr. No.</th>
+										<th>Company Name</th>
+										<th>Transit Number</th>
+										<th>Institution Number</th>
+										<th>Account Number</th>
+										<th>Address</th>
+										<th>ZIP</th>
+										<th>Contact Person</th>
+										<th>Email</th>
+										<th>Contact Number</th>
+											<th style="background-color:#ffffff;">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+                                    @foreach ($companies as $company)
+                                        <tr>
+
+										<td>{{$loop->iteration}}</td>
+										<td>{{$company->company_name}}</td>
+										<td>{{$company->transit_number}}</td>
+										<td>{{$company->institution_number}}</td>
+										<td>{{$company->account_number}}</td>
+										<td>{{$company->address}}</td>
+										<td>{{$company->zip}}</td>
+										<td>{{$company->contact_person}}</td>
+										<td>{{$company->email}}</td>
+										<td>{{$company->contact_number}}</td>
+									
+										<td  style="background-color:#ffffff;">
+											<button type="button" class="btn1 btn-outline-primary"><i class='fadeIn animated bx bx-message-add' data-bs-toggle="modal" data-bs-target="#exampleLargeModal"></i></button>
+											<button type="button" class="btn1 btn-outline-primary"><i class='bx bx-edit-alt me-0'></i></button>
+											<button type="button" class="btn1 btn-outline-danger"><i class='bx bx-trash me-0'></i></button> 
+										</td>
+									</tr>
+                                    @endforeach
+									
+									
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+    </div>
+</div>
+
 
         
         <!--end page wrapper -->

@@ -14,8 +14,8 @@ class CompanyController extends Controller
 {
     public function index(){
         $cat=get_categories();
-        // $ca=Category::all();
-        return view('Master.companyregistration',['cat'=>$cat]);
+        $companies=Companyres::orderby('id','desc')->get();
+        return view('Master.companyregistration',compact('cat','companies'));
     }
     
     public function create_company(Request $request){

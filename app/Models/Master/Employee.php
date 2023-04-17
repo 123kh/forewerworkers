@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Master;
+use App\Models\Master\Location;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ class Employee extends Model
     use HasFactory;
     protected $table="employees";
     protected $fillable=[
-        'select_location',
+        'location_id',
     'employee_id',
     'employee_name',
     'address',
@@ -28,4 +29,10 @@ class Employee extends Model
     'Job_Acceptreject',
     'Show_Hide',
     'Only_Straight_hours'];
+    
+    public function getLocationNameAttribute()
+    {
+        return ucWords(Location::find($this->location_id)->location);
+    }
 }
+
