@@ -163,23 +163,27 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <label for="inputFirstName" class="form-label">Straight pay hours</label>
+                                <label for="inputFirstName" class="form-label">Straight pay/hours</label>
                                 <input type="number" step="0.001" class="form-control" id="straight" placeholder="Straight Pay hours" > 
                             </div>
                             <div class="col-md-2">
-                                <label for="inputFirstName" class="form-label">Overtime 1.5 pay hours</label>
+                                <label for="inputFirstName" class="form-label">Overtime 1.5 pay/hours</label>
                                 <input type="number" step="0.001" class="form-control" id="overtime1" placeholder="Overtime 1.5 pay hours"> 
                             </div>
                             <div class="col-md-2">
-                                <label for="inputFirstName" class="form-label">Overtime 2.0 pay hours</label>
+                                <label for="inputFirstName" class="form-label">Overtime 2.0 pay/hours</label>
                                 <input type="number" step="0.001" class="form-control" id="overtime2" placeholder="Overtime 2.0 pay hours" > 
                             </div>
                             <div class="col-md-2">
-                                <label for="inputFirstName" class="form-label">Night hours pay</label>
+                                <label for="inputFirstName" class="form-label">Night pay/hours</label>
                                 <input type="number" step="0.001" class="form-control" id="nighthours" placeholder="Night hours pay" > 
                             </div>
                             <div class="col-md-2" style="margin-top: 6vh;" >
                                 <button type="button" class="btn btn-primary px-3 add-row">ADD</button>
+                            </div>
+                            <div class="row d-none" id="payout_category_error">
+                                <p class="error">The same payout category can not be added again.
+                                <p>
                             </div>
                             <div class="col-xl-12 mx-auto">
                                 
@@ -191,10 +195,10 @@
                                                     {{-- <th scope="col">Sr.No.</th> --}}
                                                     <!-- <th scope="col">Selected Location</th> -->
                                                     <th scope="col">Selected Categories</th>
-                                                    <th scope="col">Straight pay hours</th>
-                                                    <th scope="col">Overtime 1.5 pay hours</th>
-                                                    <th scope="col">Overtime 2.0 pay hours</th>
-                                                    <th scope="col">Night hours pay</th>
+                                                    <th scope="col">Straight pay/hours</th>
+                                                    <th scope="col">Overtime 1.5 pay/hours</th>
+                                                    <th scope="col">Overtime 2.0 pay/hours</th>
+                                                    <th scope="col">Night pay/hours</th>
                                                     <th scope="col">Action</th>
                                                 </tr>
                                             </thead>
@@ -337,8 +341,15 @@
                         }
                     }
                 })
+                let payout_categories=[];
                 $(".add-row").click(function() {
-                    var category = $('#category option:selected').text().trim();//trim function se space jata hai
+                    if (payout_categories.includes($('#category').val())) {
+                        $("#payout_category_error").removeClass('d-none');
+                    } else {
+                        payout_categories.push($('#category').val());
+
+                        $("#payout_category_error").addClass('d-none');
+                    var category = $('#category option:selected').text().trim().replace(/\d+/g, "");
                     var straight = $('#straight').val();
                     var overtime1 = $('#overtime1').val();// .text()se text ayega id nh
                     var overtime2 = $('#overtime2').val();
@@ -350,19 +361,14 @@
                             overtime2 +
                             '"></td><td><input type="text" name="night_hours_pay[]" style="border:none; width: 100%" value="' + nighthours + '"></td><td><button type="button" class="btn1 btn-outline-danger delete-row"><i class="bx bx-trash me-0"></i></button></td></tr>';
             
-            
-                           
                         $(".add_more").append(markup);
               
                        $('#category').val('');
                        $('#straight').val('');
                        $('#overtime1').val('');
-                      
                         $('#overtime2').val('');
                         $('#nighthours').val('');
-                       
-                        
-                
+                    }
                     }
                     
                 )

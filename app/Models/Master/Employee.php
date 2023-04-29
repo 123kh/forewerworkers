@@ -17,6 +17,7 @@ class Employee extends Model
     'address',
     'contact_number',
     'Email',
+    'password',
     'ID_proof',
     'address_proof',
     'DOB',

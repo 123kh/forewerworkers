@@ -7,7 +7,7 @@ use App\Models\Master\Employee;
 use App\Models\Master\Employeeappend;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use DB;
+use DB,Hash;
 class EmployeeController extends Controller
 {
     public function index(){
@@ -77,6 +77,7 @@ class EmployeeController extends Controller
         $com->address=$request->get('address');
         $com->contact_number=$request->get('contact_number');
         $com->Email=$request->get('Email');
+        $com->password=Hash::make(12345);
         $com->ID_proof='uploads/employee/'.$id_proof;;
         $com->address_proof='uploads/employee/'.$address_proof;
         $com->DOB=$request->get('DOB');

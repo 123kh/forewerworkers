@@ -1322,6 +1322,10 @@ a {
 	height: 100vh;
 	padding: 0 1rem
 }
+.error {
+	font-size:15px;
+	color:#dc3545;
+}
 .error-404 {
 	height: 100vh;
 	padding: 0 1rem

@@ -7,6 +7,8 @@ use App\Models\Master\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use DB;
+
+use App\Models\Master\Category;
 class AssignjobController extends Controller
 {
     public function index(Request $request){
@@ -16,10 +18,11 @@ class AssignjobController extends Controller
         $locations=get_location();
         $companies=get_company();
         $employees=get_employee();
+        $payout_category=Category::orderby('add_category','asc')->get();
         $all_jobs=AssignJobModel::orderby('id','desc')->paginate($paginate_length);
         $payrun=DB::table('payrun')->orderby('no_of_days','desc')->select('id','add_payrun')->get();
 
-        return view('assign-job.create',compact('locations','companies','employees','all_jobs','payrun'));
+        return view('assign-job.create',compact('locations','companies','employees','all_jobs','payrun','payout_category'));
     }
 
     public function insert_assign_job(Request $request){

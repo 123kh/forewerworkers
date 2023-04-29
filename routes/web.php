@@ -108,3 +108,4 @@ Route::get('timesheet',[TimesheetController::class,'index'])->name('timesheet');
 
 //PayRoll
 Route::get('payroll',[PayrollController::class,'index'])->name('payroll');
+Route::get('generate-payroll/{id}',[PayrollController::class,'generate_payroll'])->name('generate-payroll');

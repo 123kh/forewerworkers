@@ -8,6 +8,7 @@ use App\Models\Master\Companyres;
 use App\Models\Master\Employee;
 use App\Models\Master\Location;
 use DB;
+use Carbon\CarbonInterface;
 
 class AssignJobModel extends Model
 {
@@ -23,7 +24,10 @@ class AssignJobModel extends Model
         'job_end_date',
         'payrun_id',
         'expected_hour',
-        'status'
+        'check_in_time',
+        'check_out_time',
+        'status',
+        'timesheet'
     ];
 
     public function getCompanyNameAttribute()
@@ -47,13 +51,18 @@ class AssignJobModel extends Model
 
     public function getWorkingHoursAttribute()
     {
-        $diff_in_minutes = 0;
+        $total_work_time = 0;
         if ($this->status == '3') {
             $to = \Carbon\Carbon::createFromFormat('H:i:s', $this->check_in_time);
             $from = \Carbon\Carbon::createFromFormat('H:i:s', $this->check_out_time);
-            $diff_in_minutes = $from->diffInMinutes($to);
+            $options = [
+                'join' => ', ',
+                'parts' => 2,
+                'syntax' => CarbonInterface::DIFF_ABSOLUTE,
+              ];
+            $total_work_time = $from->diffForHumans($to,$options);
         }
-        return round($diff_in_minutes / 60) . ' Hrs';
+        return $total_work_time;
     }
 
     public function getApproxPayAttribute()
@@ -63,51 +72,54 @@ class AssignJobModel extends Model
             $to = \Carbon\Carbon::createFromFormat('H:i:s', $this->check_in_time);
             $from = \Carbon\Carbon::createFromFormat('H:i:s', $this->check_out_time);
             $diff_in_minutes = $from->diffInMinutes($to);
-            $total_hr = round($diff_in_minutes / 60);
+            //$total_hr = round($diff_in_minutes / 60);
+            $total_hr_min = round($diff_in_minutes);
             $employee_payout = DB::table('employeesappend')->where('employee_id', $this->employee_id)->orderby('id', 'asc')->first();
             $company_payout = DB::table('companysregsappend')->where('company_id', $this->company_id)->orderby('id', 'asc')->first();
             //if employee work for strainght hr . total pay will be base on amount of straight hr.
             //pay out by first pay out consideration
 
             if ($this->employee_info->Only_Straight_hours == '1') {
-                $total_pay = round($employee_payout->straight_pay_hours * $total_hr);
+                $total_pay = ($employee_payout->straight_pay_hours/60) * $total_hr_min;
             } else {
-                if($total_hr>$company_payout->straight_pay_hours){
-                    $straight_hr_pay=round($company_payout->straight_pay_hours*$employee_payout->straight_pay_hours);
-                    $total_hr=$total_hr-$company_payout->straight_pay_hours;
+                if($total_hr_min>($company_payout->straight_pay_hours*60)){
+                    $straight_hr_pay=$company_payout->straight_pay_hours*$employee_payout->straight_pay_hours;
+                    $total_hr_min=$total_hr_min-($company_payout->straight_pay_hours*60);
                     $total_pay= $total_pay+$straight_hr_pay;
-                    if($total_hr>$company_payout->overtime_hours1){
-                        $overtime_hours1_pay=round($company_payout->overtime_hours1*$employee_payout->overtime_hours1);
-                        $total_hr=$total_hr-$company_payout->overtime_hours1;
+                    
+                    if($total_hr_min>($company_payout->overtime_hours1*60)){
+                        $overtime_hours1_pay=$company_payout->overtime_hours1*$employee_payout->overtime_hours1;
+                        $total_hr_min=$total_hr_min-($company_payout->overtime_hours1*60);
                         $total_pay= $total_pay+$overtime_hours1_pay;
-                        if($total_hr>$company_payout->overtime_hours2){
-                            $overtime_hours2_pay=round($company_payout->overtime_hours2*$employee_payout->overtime_hours2);
-                            $total_hr=$total_hr-$company_payout->overtime_hours2;
+                        
+                        if($total_hr_min>($company_payout->overtime_hours2*60)){
+                            $overtime_hours2_pay=$company_payout->overtime_hours2*$employee_payout->overtime_hours2;
+                            $total_hr_min=$total_hr_min-($company_payout->overtime_hours2*60);
                             $total_pay= $total_pay+$overtime_hours2_pay;
-                            if($total_hr>$company_payout->night_hours_pay){
-                                $night_hours_pay=round($company_payout->night_hours_pay*$employee_payout->night_hours_pay);
-                                $total_hr=$total_hr-$company_payout->night_hours_pay;
+                            
+                            if($total_hr_min>($company_payout->night_hours_pay*60)){
+                                $night_hours_pay=$company_payout->night_hours_pay*$employee_payout->night_hours_pay;
+                                $total_hr_min=$total_hr_min-($company_payout->night_hours_pay*60);
                                 $total_pay= $total_pay+$night_hours_pay;
                             }else{
-                                $night_hours_pay=round($total_hr*$employee_payout->night_hours_pay);
+                                $night_hours_pay=$total_hr_min*($employee_payout->night_hours_pay/60);
                                 $total_pay= $total_pay+$night_hours_pay;
                             }
                         }else{
-                            $overtime_hours2_pay=round($total_hr*$employee_payout->overtime_hours2);
+                            $overtime_hours2_pay=$total_hr_min*($employee_payout->overtime_hours2/60);
                             $total_pay= $total_pay+$overtime_hours2_pay;
                         }
                     }else{
-                        $overtime_hours1_pay=round($total_hr*$employee_payout->overtime_hours1);
+                        $overtime_hours1_pay=$total_hr_min*($employee_payout->overtime_hours1/60);
                         $total_pay= $total_pay+$overtime_hours1_pay;
                     }
                 }               
                 else{
-                    $straight_hr_pay=round($total_hr*$company_payout->straight_pay_hours);
+                    $straight_hr_pay=$total_hr_min*($employee_payout->straight_pay_hours/60);
                     $total_pay= $total_pay+$straight_hr_pay;
                 }
-                //echo $total_hr;
             }
         }
-        return $total_pay;
+        return round($total_pay);
     }
 }

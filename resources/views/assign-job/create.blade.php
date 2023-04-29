@@ -51,7 +51,7 @@
                                     <label for="inputFirstName" class="form-label">Select Employee</label>
                                     <select name="employee_id" class="single-select mb-3" aria-label="Default select example">
                                         <option value="" selected>Select Employee</option>
-                                        @foreach ($employees as $employee)
+                                        @foreach ($payout_category as $employee)
                                             <option value="{{ $employee->id }}">{{ ucWords($employee->employee_name) }}
                                                 ({{ $employee->Email }})
                                             </option>
@@ -60,6 +60,20 @@
                                     </select>
                                 </div>
 
+                                <div class="col-md-2">
+                                    <label for="inputFirstName" class="form-label">Select Payout Category</label>
+                                    <select name="payout_category_id" class="single-select mb-3" aria-label="Default select example">
+                                        <option value="" selected>Select Payout Category</option>
+                                        @foreach ($payout_category as $p_c)
+                                            <option value="{{ $p_c->id }}">{{ ucWords($p_c->add_category) }}
+                                              
+                                            </option>
+                                        @endforeach
+
+                                    </select>
+                                </div>
+
+                                
                                 <div class="col-md-2">
                                     <label for="inputFirstName" class="form-label">Job Title</label>
                                     <input type="text" name="job_title" class="form-control" id="inputFirstName"
