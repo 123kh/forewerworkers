@@ -1,0 +1,31 @@
+method:Post
+baseurl: https://webmediaindia.co.in/forever_workers/public/api/
+1)login
+email
+password
+
+2)get_user_details
+employee_id
+
+3)get_user_jobs
+employee_id
+
+4)get_job_by_date
+employee_id
+date
+
+5)check_in_job
+employee_id
+job_id
+check_in_time
+
+
+6)check_out_job
+employee_id
+job_id
+check_out_time
+
+7)accept_reject_job
+job_id
+status
+0 for reject,1 for assign,2for accept,3for completed

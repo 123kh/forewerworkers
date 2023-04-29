@@ -20,7 +20,7 @@
 						<div class="card-body">
 							<div class="card-title d-flex align-items-center">
 
-                                <h5 class="mb-0 text-primary">Timesheet</h5>
+                                <h5 class="mb-0 text-primary">Payroll</h5>
                             </div>
                             <hr>
 							
@@ -121,7 +121,7 @@
 													
 													<th>Pay/Hour</th>
 													<th>Approx Pay</th>
-													{{-- <th>Action</th> --}}
+													<th>Action</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -129,6 +129,7 @@
 												<tr>
 													<td>{{ $loop->iteration }}</td>
 													<td>{{ Str::limit($jobs->job_title,20) }}</td>
+
 													<td>{{ $jobs->date }}</td>
 													<td>{{ $jobs->location_name }}</td>
 													<td>{{ $jobs->company_name }}</td>
@@ -162,10 +163,11 @@
 												
 													<td>{{ $jobs->working_hours}}</td>
 													<td>{{ $jobs->approx_pay}}</td>
-													{{-- <td>
-														<button type="button" class="btn1 btn-outline-primary"><i class='bx bx-edit-alt me-0'></i></button>
-														<button type="button" class="btn1 btn-outline-success"><i class='fadeIn animated bx bx-check-double'></i></button> 
-													</td> --}}
+													<td>
+														<a href="{{route('generate-payroll',$jobs->id)}}" class="btn1 btn-outline-primary">
+															<i class='fadeIn animated bx bx-file me-0'></i></a>
+														
+													</td>
 												</tr>
 												@endforeach
 											</tbody>
