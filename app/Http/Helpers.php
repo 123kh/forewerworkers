@@ -1,5 +1,5 @@
 <?php
-
+use Carbon\Carbon;
 
 
 
@@ -32,6 +32,21 @@ if (!function_exists('get_categories')) {
     {
         $categories=DB::table('categorys')->orderby('add_category','asc')->select('id','add_category')->get();
         return $categories;
+    }
+}
+
+if (!function_exists('all_months')) {
+    function all_months()
+    {
+        $year = 2023; // set the year
+        $months =[];
+        for ($month = 1; $month <= 12; $month++) {
+            $date = Carbon::createFromDate($year, $month, 1);
+            $monthName = $date->format('F');
+            $months[]=$monthName;
+
+        }
+return $months;
     }
 }
 

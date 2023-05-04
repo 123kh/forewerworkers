@@ -30,9 +30,9 @@
       </tr>
     </table>
 
-    <p style="font-size: 12px; margin-left: 2%;">SIDHU, JAGDEEP SINGH</p>
-    <p style="font-size: 12px; margin-left: 2%;">10132 - 128A ST</p>
-    <p style="font-size: 12px; margin-left: 2%;">SURREY, British Columbia, V3T 3E6</p>
+    <p style="font-size: 12px; margin-left: 2%;">{{$job->employee_info->employee_name}}</p>
+    <p style="font-size: 12px; margin-left: 2%;">{{$job->employee_info->address}}</p>
+    <p style="font-size: 12px; margin-left: 2%;">{{$job->employee_info->contact_number}}</p>
     <!-- <hr style="color: #000;"> -->
 
 

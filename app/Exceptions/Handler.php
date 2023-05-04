@@ -32,10 +32,29 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
-    public function register()
+    // public function register()
+    // {
+    //     $this->reportable(function (Throwable $e) {
+    //         //
+    //     });
+    // }
+
+    public function render($request, Throwable $exception)
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        if ($exception instanceof \Exception) {
+           
+            if($exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException){
+                return abort('404');
+            }
+            if ($exception->getCode() == '0' && $exception->getmessage() == 'CSRF token mismatch.') {
+               return redirect()->route('login');
+            }
+        }
+
+        // if ($exception instanceof \ErrorException) {
+        //     return response()->view('errors.custom', [], 500);
+        // }
+
+        return parent::render($request, $exception);
     }
 }

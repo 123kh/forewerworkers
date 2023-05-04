@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AssignJobModel;
 use PDF;    
-
-
 class PayrollController extends Controller
 {
     public function index(Request $request){
@@ -27,23 +25,31 @@ class PayrollController extends Controller
         ->when($request->location_id, function ($q) use ($request) {
             return $q->where('location_id', $request->location_id);
         })
-        ->when($request->from_date, function ($q) use ($request) {
-            return $q->whereDate('date','>=', $request->from_date);
+        ->when(!$request->year, function ($q) {
+            return $q->whereYear('date','=', date('Y'));
+        })  
+        ->when($request->year, function ($q) use ($request) {
+            return $q->whereYear('date','=', $request->year);
+        })        
+        ->when(!$request->month, function ($q) {
+            return $q->whereMonth('date','=', date('m'));
+        })  
+        ->when($request->month, function ($q) use ($request) {
+            return $q->whereMonth('date','=', $request->month);
         })
-        ->when($request->to_date, function ($q) use ($request) {
-            return $q->whereDate('date','<=', $request->to_date);
-        })
+        ->CompletedJob() //CompletedJob() is a scope define in model in which condition is written
         ->orderby('id','desc')->paginate($paginate_length);
         return view('payroll.payroll',compact('locations','companies','employees','all_jobs'));
     }
 
 
     public function generate_payroll(Request $request){
-        $assignjob=AssignJobModel::find($request->id);
-        $pdf=PDF::loadView('payroll.payroll-print');
-        return $pdf->download('Payroll-' . date('dmmyhis') . '.pdf');
+        $job=AssignJobModel::find($request->id);
+        echo json_encode($job);
+        //$pdf=PDF::loadView('payroll.payroll-print');
+        //return $pdf->download('Payroll-' . date('dmmyhis') . '.pdf');
 
 
-        //return view('payroll.payroll-print',compact('assignjob'));
+        return view('payroll.payroll-print',compact('job'));
     }
 }

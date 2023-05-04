@@ -26,16 +26,27 @@
 							
 								<form class="row g-2" action="">
 									<div class="col-md-2">
-										<label for="inputFirstName" class="form-label">From Date</label>
-										<input name="from_date"
-											value="@if (app('request')->input('from_date')) {{ app('request')->input('from_date') }} @endif"
-											type="date" class="form-control" id="inputFirstName" placeholder="Address">
+										<label for="inputFirstName" class="form-label">Select Year</label>
+										<select name="year" class="single-select mb-3" aria-label="Default select example">
+											<option value="" selected>Select Year</option>
+											@foreach (range(2015, date('Y')) as $i) 
+												<option value="{{ $i }}"
+												@if(app('request')->input('year')=='' && date('Y')==$i)selected @endif
+													@if (app('request')->input('year') && app('request')->input('year') == $i) selected @endif">{{ $i }}</option>
+											@endforeach
+										</select>
 									</div>
 									<div class="col-md-2">
-										<label for="inputFirstName" class="form-label">To Date</label>
-										<input name="to_date"
-											value="@if (app('request')->input('to_date')) {{ app('request')->input('to_date') }} @endif"
-											type="date" class="form-control" id="inputFirstName" placeholder="Address">
+										<label for="inputFirstName" class="form-label">Select Month</label>
+										<select name="month" class="single-select mb-3" aria-label="Default select example">
+											<option value="" selected>Select Month</option>
+											@foreach (all_months() as $month) 
+												<option value="{{ $loop->iteration }}"
+												@if(app('request')->input('month')=='' && date('F')==$month)selected @endif
+
+													@if (app('request')->input('month') && app('request')->input('month') == $loop->iteration) selected @endif">{{ $month }}</option>
+											@endforeach
+										</select>
 									</div>
 									<div class="col-md-2">
 										<label for="inputFirstName" class="form-label">Select Location</label>

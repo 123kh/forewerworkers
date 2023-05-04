@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Validator;
 use DB;
 
 use App\Models\Master\Category;
+use App\Models\Master\Employeeappend;
+use App\Models\Master\Companyappend;
+
 class AssignjobController extends Controller
 {
     public function index(Request $request){
@@ -26,6 +29,13 @@ class AssignjobController extends Controller
     }
 
     public function insert_assign_job(Request $request){
+        $check_employee_category=Employeeappend::where('select_categories',$request->payout_category_id)->exists();
+        $check_company_category=Companyappend::where('select_categories',$request->payout_category_id)->exists();
+        if(!$check_employee_category && !$check_company_category){
+            return back()->with(['error'=>'The company and employee both must have same payout information for billling.']);
+
+         }
+     
         $validator = Validator::make(
             $request->all(),
             [
@@ -39,6 +49,8 @@ class AssignjobController extends Controller
                 'job_end_date' => 'required',
                 'expected_hour' => 'required',
                 'payrun_id' => 'required',
+                'payout_category_id' => 'required',
+                
               
             ],
             [
@@ -51,7 +63,8 @@ class AssignjobController extends Controller
                 'job_start_date.required' => 'Please select job start date.',
                 'job_end_date.required' => 'Please select job end date.',
                 'expected_hour.required' => 'Please enter expected hour.',
-                'payrun_id.required' => 'Please select Payrun Type.'
+                'payrun_id.required' => 'Please select Payrun Type.',
+                'payout_category_id.required' => 'Please select Payout Category.',
 
             ]);
             if ($validator->fails()) {
@@ -76,7 +89,8 @@ class AssignjobController extends Controller
                 'job_end_date'=>$request->job_end_date,
                 'expected_hour'=>$request->expected_hour,
                 'status'=>$status,
-                'payrun_id'=> $request->payrun_id
+                'payrun_id'=> $request->payrun_id,
+                'payout_category_id'=> $request->payout_category_id,
 
             ]);
             return back()->with(['success'=>'Date inserted successfully.']);
