@@ -163,7 +163,7 @@ class ApiController extends Controller
             return response()->json($validator);
         } 
         if(AssignJobModel::find($request->job_id)){
-            AssignJobModel::find($request->job_id)->update(['check_in_time'=>$request->check_in_time]);
+            AssignJobModel::find($request->job_id)->update(['check_in_time'=>date('Y-m-d').' '.$request->check_in_time]);
             $validator['status'] = true;
             $validator['messages']='Check in successfully.';
             return response()->json($validator);
@@ -186,7 +186,7 @@ class ApiController extends Controller
             return response()->json($validator);
         } 
         if(AssignJobModel::find($request->job_id)){  
-            AssignJobModel::find($request->job_id)->update(['check_out_time'=>$request->check_out_time]);
+            AssignJobModel::find($request->job_id)->update(['check_out_time'=>date('Y-m-d').' '.$request->check_out_time]);
             $validator['status'] = true;
             $validator['messages']='Check out successfully.';
             return response()->json($validator);

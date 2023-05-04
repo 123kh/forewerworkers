@@ -27,10 +27,13 @@ use App\Http\Controllers\PayrollController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('dashboards');
 });
 
 
+Route::get('login',function () {
+    return 'login';
+})->name('login');
 Route::get('test-mail',[MailController::class,'index']);
 Route::get('dashboards',[DashboardController::class,'index'])->name('dashboards');
 

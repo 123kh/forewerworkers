@@ -31,6 +31,7 @@ class TimesheetController extends Controller
         ->when($request->to_date, function ($q) use ($request) {
             return $q->whereDate('date','<=', $request->to_date);
         })
+        ->CompletedJob() //CompletedJob() is a scope define in model in which condition is written
         ->orderby('id','desc')->paginate($paginate_length);
         return view('timesheet',compact('locations','companies','employees','all_jobs'));
     }
