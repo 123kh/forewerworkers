@@ -48,7 +48,8 @@
 											@endforeach
 										</select>
 									</div>
-									<div class="col-md-2">
+									
+									{{-- <div class="col-md-2">
 										<label for="inputFirstName" class="form-label">Select Location</label>
 										<select name="location_id" class="single-select mb-3" aria-label="Default select example">
 											<option value="" selected>Select Location</option>
@@ -74,7 +75,8 @@
 	
 	
 										</select>
-									</div>
+									</div> --}}
+
 									<div class="col-md-2">
 										<label for="inputFirstName" class="form-label">Select Employee</label>
 										<select name="employee_id" class="single-select mb-3"
@@ -124,13 +126,13 @@
 											<thead>
 												<tr>
 													<th>Sr. No.</th>
-													<th>Job Title</th>
-													<th>Date</th>
+													{{--<th>Job Title</th>
+													 <th>Date</th>
 													<th>Location</th>  
-													<th>Company</th>
+													<th>Company</th> --}}
 													<th>Employee</th>
 													
-													<th>Pay/Hour</th>
+													<th>Pay Hour</th>
 													<th>Approx Pay</th>
 													<th>Action</th>
 												</tr>
@@ -139,41 +141,25 @@
 												@foreach ($all_jobs as $jobs)
 												<tr>
 													<td>{{ $loop->iteration }}</td>
-													<td>{{ Str::limit($jobs->job_title,20) }}</td>
+													{{--<td>{{ Str::limit($jobs->job_title,20) }}</td>
 
-													<td>{{ $jobs->date }}</td>
+													 <td>{{ $jobs->date }}</td>
 													<td>{{ $jobs->location_name }}</td>
-													<td>{{ $jobs->company_name }}</td>
+													<td>{{ $jobs->company_name }}</td> --}}
 													<td>
 
 														<div class="popover__wrapper">
 															<p>
 																{{ $jobs->employee_name }}
-															</p><a href="#">
-																<p class="popover__title">Job Information</p>
-															</a>
-			
-															<div class="popover__content">
-																<div class="modal-area">
-																	<p>Job Title: {{ $jobs->job_title }}
-																		<br>
-																		Job Description: {{ $jobs->job_description }}
-																		<br>
-																		Start & End Date: {{ $jobs->job_start_date }} to
-																		{{ $jobs->job_end_date }}
-																		<br>
-																		Expected Hours For Complition: {{ $jobs->expected_hour }}Hr
-																		<br>
-																		{{-- Expected Date & Time For Closing Job: 13-2-2023 12:09
-																		<br> --}}
-																	</p>
-																</div>
+															</p>
+														
 															</div>
+
 														</div>
 													</td>
 												
-													<td>{{ $jobs->working_hours}}</td>
-													<td>{{ $jobs->approx_pay}}</td>
+													<td>{{ $jobs->month_working_hours}}</td>
+													<td>{{ $jobs->month_approx_pay}}</td>
 													<td>
 														<a href="{{route('generate-payroll',$jobs->id)}}" class="btn1 btn-outline-primary">
 															<i class='fadeIn animated bx bx-file me-0'></i></a>

@@ -1,6 +1,6 @@
 <?php
 use Carbon\Carbon;
-
+use App\Models\Tax_Master\Othertax;
 
 
 if (!function_exists('get_company')) {
@@ -47,6 +47,42 @@ if (!function_exists('all_months')) {
 
         }
 return $months;
+    }
+}
+
+if (!function_exists('amount_to_words')) {
+    function amount_to_words($amount)
+    {
+        $spell_out = new \NumberFormatter(
+            'en_US', 
+            \NumberFormatter::SPELLOUT
+        );
+        
+        return $spell_out->format($amount);
+    }
+}
+
+if (!function_exists('get_ELTax')) {
+    function get_ELTax($job_id,$amount)
+    {
+        $ELTax=Othertax::pluck('EI_Employee_Contribution')->first();
+        return ($amount/100)*$ELTax;
+    }
+}
+
+if (!function_exists('get_CPPTax')) {
+    function get_CPPTax($job_id,$amount)
+    {
+        $CPPTax=Othertax::pluck('CPP_Employee_Contribution')->first();
+        return ($amount/100)*$CPPTax;
+    }
+}
+
+if (!function_exists('get_Tax')) {
+    function get_Tax($job_id,$amount)
+    {
+        $Tax=1; //static because we dont know which tax is this
+        return ($amount/100)*$Tax;
     }
 }
 

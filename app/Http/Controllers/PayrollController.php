@@ -38,18 +38,18 @@ class PayrollController extends Controller
             return $q->whereMonth('date','=', $request->month);
         })
         ->CompletedJob() //CompletedJob() is a scope define in model in which condition is written
-        ->orderby('id','desc')->paginate($paginate_length);
+        ->orderby('id','desc')->groupby('employee_id')->paginate($paginate_length);
+        //exit();
         return view('payroll.payroll',compact('locations','companies','employees','all_jobs'));
     }
 
 
     public function generate_payroll(Request $request){
-        $job=AssignJobModel::find($request->id);
-        echo json_encode($job);
-        //$pdf=PDF::loadView('payroll.payroll-print');
-        //return $pdf->download('Payroll-' . date('dmmyhis') . '.pdf');
+      
+        $job=AssignJobModel::find($request->job_id);
+        $pdf=PDF::loadView('payroll.payroll-print',['job'=>$job]);
+        return $pdf->download('Payroll-' . time() . '.pdf');
+       // return view('payroll.payroll-print',compact('job'));
 
-
-        return view('payroll.payroll-print',compact('job'));
     }
 }

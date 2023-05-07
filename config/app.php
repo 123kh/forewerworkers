@@ -14,7 +14,9 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-
+    'company_name'=>'FOREVER WORKERS CONTRACTING LTD',
+    'company_address'=>'10132 - 128A Street<br>
+    Surrey, British Columbia V3T 3E6',
     /*
     |--------------------------------------------------------------------------
     | Application Environment
