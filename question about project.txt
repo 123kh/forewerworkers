@@ -1,0 +1,6 @@
+1) if any job is added and tax and other master change, how calculation is going to happen.
+2) if there are multiple jobs and master taxes change then?
+3)in master there are two EL and in pdf just one. on which we are gooing to ind EL ampolyee or employeer and same for APP tax.
+4)what is tax in pdf that is there after EL.
+5)EL insurable hours?
+6)if company or emplyee edit or delete their record , how their already assign job calcualtion work?

@@ -41,8 +41,8 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
+   
         if ($exception instanceof \Exception) {
-           
             if($exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException){
                 return abort('404');
             }
@@ -50,7 +50,10 @@ class Handler extends ExceptionHandler
                return redirect()->route('login');
             }
         }
+        // if ($exception->getCode() == '0' && str_contains($exception->getmessage(),'syntax error') ){
+        //     return response()->view('errors.custom', [], 500);
 
+        // }
         // if ($exception instanceof \ErrorException) {
         //     return response()->view('errors.custom', [], 500);
         // }
