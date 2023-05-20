@@ -49,7 +49,7 @@ class PayrollController extends Controller
         $job=AssignJobModel::find($request->job_id);
         $pdf=PDF::loadView('payroll.payroll-print',['job'=>$job]);
         return $pdf->download('Payroll-' . time() . '.pdf');
-       // return view('payroll.payroll-print',compact('job'));
+      // return view('payroll.payroll-print',compact('job'));
 
     }
 }

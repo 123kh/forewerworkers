@@ -4,3 +4,5 @@
 4)what is tax in pdf that is there after EL.
 5)EL insurable hours?
 6)if company or emplyee edit or delete their record , how their already assign job calcualtion work?
+7)Regular: 80.00 @ 20.00/Hr how this going to be calculated because there might be diff job with diff price.
+8)print payout period date?

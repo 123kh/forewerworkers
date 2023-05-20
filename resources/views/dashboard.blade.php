@@ -1,6 +1,5 @@
 @extends('layout')
 @section('content')
-
     @include('paginatecss')
 
     <!--start page wrapper -->
@@ -324,6 +323,8 @@
 
                                         </tbody>
                                     </table>
+                                    {!! $accepted_Job->withQueryString()->links('pagination.custom') !!}
+
                                 </div>
                             </div>
 
@@ -426,6 +427,8 @@
 
                                         </tbody>
                                     </table>
+                                    {!! $rejected_Job->withQueryString()->links('pagination.custom') !!}
+
                                 </div>
                             </div>
 

@@ -33,6 +33,8 @@ class DashboardController extends Controller
         ->when($request->to_date, function ($q) use ($request) {
             return $q->whereDate('date','<=', $request->to_date);
         })
+        ->orderby('id','desc')
+
         ->paginate($paginate_length);
 
 
@@ -49,6 +51,8 @@ class DashboardController extends Controller
         ->when($request->to_date, function ($q) use ($request) {
             return $q->whereDate('date','<=', $request->to_date);
         })
+        ->orderby('id','desc')
+
         ->paginate($paginate_length);
 
         $rejected_Job=AssignJobModel::where('status','0')
@@ -64,7 +68,8 @@ class DashboardController extends Controller
         ->when($request->to_date, function ($q) use ($request) {
             return $q->whereDate('date','<=', $request->to_date);
         })
-         ->paginate($paginate_length);
+        ->orderby('id','desc')
+        ->paginate($paginate_length);
          
         $companies=get_company();
         $employees=get_employee();

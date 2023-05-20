@@ -186,7 +186,10 @@ class ApiController extends Controller
             return response()->json($validator);
         } 
         if(AssignJobModel::find($request->job_id)){  
-            AssignJobModel::find($request->job_id)->update(['check_out_time'=>date('Y-m-d').' '.$request->check_out_time]);
+            AssignJobModel::find($request->job_id)->update([
+                'check_out_time'=>date('Y-m-d').' '.$request->check_out_time,
+                'status'=>'3'
+            ]);
             $validator['status'] = true;
             $validator['messages']='Check out successfully.';
             return response()->json($validator);

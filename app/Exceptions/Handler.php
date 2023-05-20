@@ -50,13 +50,13 @@ class Handler extends ExceptionHandler
                return redirect()->route('login');
             }
         }
-        // if ($exception->getCode() == '0' && str_contains($exception->getmessage(),'syntax error') ){
-        //     return response()->view('errors.custom', [], 500);
+        if ($exception->getCode() == '0' && str_contains($exception->getmessage(),'syntax error') ){
+            return response()->view('errors.custom', [], 500);
 
-        // }
-        // if ($exception instanceof \ErrorException) {
-        //     return response()->view('errors.custom', [], 500);
-        // }
+        }
+        if ($exception instanceof \ErrorException) {
+            return response()->view('errors.custom', [], 500);
+        }
 
         return parent::render($request, $exception);
     }
