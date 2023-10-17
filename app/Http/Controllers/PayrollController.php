@@ -45,11 +45,23 @@ class PayrollController extends Controller
 
 
     public function generate_payroll(Request $request){
+
       
         $job=AssignJobModel::find($request->job_id);
-        $pdf=PDF::loadView('payroll.payroll-print',['job'=>$job]);
-        return $pdf->download('Payroll-' . time() . '.pdf');
-      // return view('payroll.payroll-print',compact('job'));
+        
+        $get_employee_job_months_first = AssignJobModel::where('status', '3')->where('employee_id', $job->employee_id)
+        ->whereYear('date', '=', date('Y'))
+        ->select('date')->orderby('date','asc')->first();
+        
+        $get_employee_job_months_last = AssignJobModel::where('status', '3')->where('employee_id', $job->employee_id)
+        ->whereYear('date', '=', date('Y'))
+        ->select('date')->orderby('date','desc')->first();
+        
+      
+       // $pdf=PDF::loadView('payroll.payroll-print',['job'=>$job]);
+
+       // return $pdf->download('Payroll-' . time() . '.pdf');
+       return view('payroll.payroll-print',['job'=>$job,'get_employee_job_months_first'=>$get_employee_job_months_first,'get_employee_job_months_last'=>$get_employee_job_months_last]);
 
     }
 }

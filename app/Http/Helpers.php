@@ -86,4 +86,28 @@ if (!function_exists('get_Tax')) {
     }
 }
 
+if (!function_exists('vacation_pay')) {
+    function vacation_pay($job_id,$amount)
+    {
+        $vacation_percentage=Othertax::pluck('vacation_pay')->first();
+
+        return ($amount/100)*$vacation_percentage;
+    }
+}
+
+if (!function_exists('get_employee_payout')) {
+    function get_employee_payout($job_id)
+    {
+        $get_employee_payout = DB::table('assign_job_models')
+        ->join('employeesappend', function ($join) {
+            $join->on('employeesappend.employee_id', '=', 'assign_job_models.employee_id')
+                 ->on('employeesappend.select_categories', '=', 'assign_job_models.payout_category_id');
+        })
+        ->where('assign_job_models.id', $job_id)
+        ->first();
+        return $get_employee_payout;
+    }
+}
+
+
 ?>

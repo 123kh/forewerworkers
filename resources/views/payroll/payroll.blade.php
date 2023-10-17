@@ -159,7 +159,9 @@
 													</td>
 												
 													<td>{{ $jobs->month_working_hours}}</td>
-													<td>{{ $jobs->month_approx_pay}}</td>
+													<td>
+														{{$jobs->month_approx_pay['payout']['total_pay']}}
+														</td>
 													<td>
 														<a href="{{route('generate-payroll',$jobs->id)}}" class="btn1 btn-outline-primary">
 															<i class='fadeIn animated bx bx-file me-0'></i></a>

@@ -29,3 +29,10 @@ check_out_time
 job_id
 status
 0 for reject,1 for assign,2for accept,3for completed
+
+8)forgot_password_otp
+contact_number
+
+9)update_password
+contact_number
+password

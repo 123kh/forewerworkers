@@ -108,16 +108,12 @@
                                     <input type="date" value="{{ $edit_job->date }}" name="date" class="form-control"
                                         id="inputFirstName" placeholder="Address">
                                 </div>
-                                <div class="col-md-2">
-                                    <label for="inputFirstName" class="form-label">Select Location</label>
-                                    <select name="location_id" class="form-select mb-3" aria-label="Default select example">
-                                        <option value="" selected>Select Location</option>
-                                        @foreach ($location as $location)
-                                            <option value="{{ $location->id }}"
-                                                @if ($location->id == $edit_job->location_id) selected @endif>
-                                                {{ ucWords($location->location) }}</option>
-                                        @endforeach
-                                    </select>
+
+
+                                 <div class="col-md-2">
+                                    <label for="inputFirstName" class="form-label">Location</label>
+                                    <input type="text" name="location_id" value="{{ $edit_job->location_id }}" class="form-control" id="location"
+                                    placeholder="Enter Location">
                                 </div>
 
 
@@ -165,6 +161,11 @@
                                     <label for="inputFirstName" class="form-label">Job Start Date</label>
                                     <input type="date" value="{{ $edit_job->job_start_date }}" name="job_start_date"
                                         class="form-control" id="inputFirstName" placeholder="Address">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="inputFirstName" class="form-label">Job Start Time</label>
+                                    <input type="time" name="job_start_time"  value="{{ $edit_job->job_start_time }}" class="form-control" 
+                                        >
                                 </div>
                                 <div class="col-md-2">
                                     <label for="inputFirstName" class="form-label">Job End Date</label>
@@ -255,7 +256,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $jobs->date }}</td>
-                                        <td>{{ $jobs->location_name }}</td>
+                                        <td>{{ $jobs->location_id }}</td>
                                         <td>{{ $jobs->company_name }}</td>
                                         <td>
 

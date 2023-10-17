@@ -20,18 +20,11 @@
                             <input type="date" name="date" id="modal_date" class="form-control"
                                 id="inputFirstName" placeholder="Address">
                         </div>
+                       
                         <div class="col-md-3">
-                            <label  class="form-label">Select
-                                Location</label>
-                            <select name="location_id"  id="modal_location_id" class="single-select2 mb-3"
-                                aria-label="Default select example">
-                                @foreach ($locations as $location)
-                                    <option value="{{ $location->id }}">
-                                        {{ ucWords($location->location) }}</option>
-                                @endforeach
-
-
-                            </select>
+                            <label for="inputFirstName" class="form-label">Location</label>
+                            <input type="text" name="location_id" class="form-control" id="modal_location_id"
+                            placeholder="Enter Location">
                         </div>
 
 

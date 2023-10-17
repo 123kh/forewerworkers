@@ -24,7 +24,7 @@
                                         placeholder="Address">
                                 </div>
 
-                                <div class="col-md-2">
+                                {{-- <div class="col-md-2">
                                     <label for="inputFirstName" class="form-label">Select Location</label>
                                     <select name="location_id" class="single-select mb-3" aria-label="Default select example">
                                         <option value="" selected>Select Location</option>
@@ -34,6 +34,12 @@
 
 
                                     </select>
+                                </div> --}}
+
+                                 <div class="col-md-2">
+                                    <label for="inputFirstName" class="form-label">Location</label>
+                                    <input type="text" name="location_id" class="form-control" id="location"
+                                    placeholder="Enter Location">
                                 </div>
 
                                 <div class="col-md-2">
@@ -90,6 +96,11 @@
                                     <label for="inputFirstName" class="form-label">Job Start Date</label>
                                     <input type="date" name="job_start_date" class="form-control" id="inputFirstName"
                                         placeholder="Address">
+                                </div>
+                                 <div class="col-md-2">
+                                    <label for="inputFirstName" class="form-label">Job Start Time</label>
+                                    <input type="time" name="job_start_time" class="form-control" 
+                                        >
                                 </div>
                                 <div class="col-md-2">
                                     <label for="inputFirstName" class="form-label">Job End Date</label>
@@ -178,7 +189,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $jobs->date }}</td>
-                                        <td>{{ $jobs->location_name }}</td>
+                                        <td>{{ $jobs->location_id }}</td>
                                         <td>{{ $jobs->company_name }}</td>
                                         <td>
 

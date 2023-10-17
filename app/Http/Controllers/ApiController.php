@@ -36,6 +36,63 @@ class ApiController extends Controller
         }
     }
 
+    public function forgot_password_otp(Request $request)
+	{
+        $validators = Validator::make($request->all(), [
+            'contact_number' => 'required',
+            
+        ]);
+        if ($validators->fails()){
+            $validator['status'] = false;
+            $validator['messages'] = $validators->errors()->all();
+            return response()->json($validator);
+        }
+        $user=Employee::where('contact_number',$request->contact_number)->first();
+        if($user){
+            $otp = rand('1000', '9999');
+            // $msg = 'Your OTP verification code for password set or change request is ' . $otp . '. Amruta Hatcheries & Foods.';
+            // $msg = urlencode($msg);
+            // $to = $request->contact_number;
+            // $data1 = "uname=habitm1&pwd=habitm1&senderid=AMFOOD&to=" . $to . "&msg=" . $msg . "&route=T&peid=1001880907683289176&tempid=1007815211240576240";
+            // $ch = curl_init('http://bulksms.webmediaindia.com/sendsms?');
+            // curl_setopt($ch, CURLOPT_POST, true);
+            // curl_setopt($ch, CURLOPT_POSTFIELDS, $data1);
+            // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            // $result = curl_exec($ch);
+            // curl_close($ch);
+            return response()->json($otp);
+        }else{
+            $validator['status'] = false;
+            $validator['messages'] = 'User not present.';
+            return response()->json($validator);
+        }
+	}
+
+    public function update_password(Request $request)
+	{
+        $validators = Validator::make($request->all(), [
+            'contact_number' => 'required',
+            'password' => 'required',
+            
+        ]);
+        if ($validators->fails()){
+            $validator['status'] = false;
+            $validator['messages'] = $validators->errors()->all();
+            return response()->json($validator);
+        }
+        $user=Employee::where('contact_number',$request->contact_number)->first();
+        if($user){
+            $update = Employee::where('contact_number', $request->contact_number)->update([
+                'password' => Hash::make($request->password),
+
+            ]);
+		return response()->json(['messages'=>'Password updated successfully.']);
+        }else{
+            return response()->json(['messages'=>'User not present.']);
+
+        }
+	}
+
     public function get_user_details(Request $request){
         $validators = Validator::make($request->all(), [
             'employee_id' => 'required'

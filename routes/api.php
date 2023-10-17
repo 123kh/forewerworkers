@@ -39,3 +39,5 @@ Route::post('check_in_job',[ApiController::class,'check_in_job']);
 Route::post('check_out_job',[ApiController::class,'check_out_job']);
 Route::get('accept_reject_job',[ApiController::class,'accept_reject_job']);
 Route::post('upload_timesheet',[ApiController::class,'upload_timesheet']);
+Route::post('forgot_password_otp',[ApiController::class,'forgot_password_otp']);
+Route::post('update_password',[ApiController::class,'update_password']);

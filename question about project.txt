@@ -1,8 +1,1 @@
-1) if any job is added and tax and other master change, how calculation is going to happen.
-2) if there are multiple jobs and master taxes change then?
-3)in master there are two EL and in pdf just one. on which we are gooing to ind EL ampolyee or employeer and same for APP tax.
-4)what is tax in pdf that is there after EL.
-5)EL insurable hours?
-6)if company or emplyee edit or delete their record , how their already assign job calcualtion work?
-7)Regular: 80.00 @ 20.00/Hr how this going to be calculated because there might be diff job with diff price.
-8)print payout period date?
+1) if company has 24 payout setting and employee work for 30 hr. last 6 hour how we re gonna calculate like it will be considered as night hour or strainght pay. if employee start work at 3 pm last hour will be 9pm.

@@ -462,7 +462,7 @@
                 $("#exampleLargeModal").modal('show');
                 $("#model_id").val($(this).attr('job_id'));
                 $("#modal_date").val($(this).attr('date'));
-                $("#modal_location_id").val($(this).attr('location_id')).change();
+                $("#modal_location_id").val($(this).attr('location_id'));
                 $("#modal_company_id").val($(this).attr('company_id')).change();
                 $("#modal_employee_id").val($(this).attr('employee_id')).change();
                 $("#modal_job_title").val($(this).attr('job_title'));

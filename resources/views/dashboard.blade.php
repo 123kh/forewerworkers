@@ -1,7 +1,6 @@
 @extends('layout')
 @section('content')
     @include('paginatecss')
-
     <!--start page wrapper -->
     <div class="page-wrapper">
         <div class="page-content">
