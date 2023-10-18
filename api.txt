@@ -36,3 +36,7 @@ contact_number
 9)update_password
 contact_number
 password
+
+9)update_password_by_id
+id
+password

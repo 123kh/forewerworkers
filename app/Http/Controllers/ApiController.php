@@ -93,6 +93,31 @@ class ApiController extends Controller
         }
 	}
 
+    public function update_password_by_id(Request $request)
+	{
+        $validators = Validator::make($request->all(), [
+            'id' => 'required',
+            'password' => 'required',
+            
+        ]);
+        if ($validators->fails()){
+            $validator['status'] = false;
+            $validator['messages'] = $validators->errors()->all();
+            return response()->json($validator);
+        }
+        $user=Employee::where('id',$request->id)->first();
+        if($user){
+            $update = Employee::where('id', $request->id)->update([
+                'password' => Hash::make($request->password),
+
+            ]);
+		return response()->json(['messages'=>'Password updated successfully.']);
+        }else{
+            return response()->json(['messages'=>'User not present.']);
+
+        }
+	}
+
     public function get_user_details(Request $request){
         $validators = Validator::make($request->all(), [
             'employee_id' => 'required'
