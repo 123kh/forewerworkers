@@ -130,7 +130,7 @@
 													<td>{{ $loop->iteration }}</td>
 													<td>{{ Str::limit($jobs->job_title,20) }}</td>
 													<td>{{ $jobs->date }}</td>
-													<td>{{ $jobs->location_name }}</td>
+													<td>{{ $jobs->location_id }}</td>
 													<td>{{ $jobs->company_name }}</td>
 													<td>
 

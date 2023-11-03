@@ -15,6 +15,9 @@ use App\Http\Controllers\Tax_Master\ProvitialtaxSlabController;
 use App\Http\Controllers\TimesheetController;
 use App\Http\Controllers\PayrollController;
 
+use App\Http\Controllers\Master\TimeMasterController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -62,12 +65,14 @@ Route::post('master/update_category',[LocationController::class,'update_category
 Route::get('master/destroycat/{id}',[LocationController::class,'destroycategory'])->name('destroycat');
 
 //Company
-Route::get('master/companys',[CompanyController::class,'index'])->name('master.company');
+Route::get('master/company',[CompanyController::class,'index'])->name('master.company');
 Route::post('master/create_company',[CompanyController::class,'create_company'])->name('master.create_company');
+Route::get('master/delete_company/{id}',[CompanyController::class,'delete_company'])->name('master.delete_company');
 
 //Employee
 Route::get('master/employee',[EmployeeController::class,'index'])->name('master.employee');
 Route::post('master/create_employee',[EmployeeController::class,'create_employee'])->name('master.create_employee');
+Route::get('master/delete_employee/{id}',[EmployeeController::class,'delete_employee'])->name('master.delete_employee');
 
 //Payrun 
 Route::get('master/payoutpayrun',[PayoutpayrunController::class,'index'])->name('master.payoutpayrun');
@@ -101,6 +106,10 @@ Route::get('master/destroy_provitialslab/{id}',[ProvitialtaxSlabController::clas
 Route::get('taxmaster/fedraltaxrebate',[FedraltaxrebateController::class,'index'])->name('taxmaster.fedralrebate');
 Route::post('master/create_fedraltaxrebate',[FedraltaxrebateController::class,'create_fedraltaxrebate'])->name('master.create_fedraltaxrebate');
 
+//time master
+Route::get('time-master',[TimeMasterController::class,'index'])->name('time-master');
+Route::post('update-time-master',[TimeMasterController::class,'update'])->name('update-time-master');
+
 //othertax
 Route::get('taxmaster/othertax',[OtherTaxController::class,'index'])->name('taxmaster.othertax');
 Route::post('master/update_othertax',[OtherTaxController::class,'update_othertax'])->name('master.update_othertax');
@@ -112,6 +121,7 @@ Route::get('timesheet',[TimesheetController::class,'index'])->name('timesheet');
 //PayRoll
 Route::get('payroll',[PayrollController::class,'index'])->name('payroll');
 Route::get('generate-payroll/{job_id}',[PayrollController::class,'generate_payroll'])->name('generate-payroll');
+
 
 
 Route::get('/clear-cache', function () {

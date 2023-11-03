@@ -18,7 +18,7 @@
                             {{testfunction()}} --}}
                             </div>
                             <hr>
-                            <form class="row g-2" action="{{ route('master.create_company') }}" method="post">
+                            <form class="row g-2" action="{{ route('master.create_company') }}" method="post" id="myForm">
                                 @csrf
                                 <!-- <div class="col-md-2">
                                     <label for="inputFirstName" class="form-label">Select Date </label>
@@ -83,25 +83,14 @@
                                     <input type="text" class="form-control" id="inputFirstName" placeholder="Starting Number">
                                 </div> -->
                                 <hr>
+                                
                                 <div class="card-title d-flex align-items-center">
 
                                     <h5 class="mb-0 text-primary">Payout Settings<h5>
                                 </div>
-                                <!-- <div class="col-md-2">
-                                    <label for="inputFirstName" class="form-label">Select Location</label>
-                                    <select class="form-select mb-3" aria-label="Default select example">
-                                        <option selected>Pune</option>
-                                        <option value="1">Nagpur</option>
-                                        <option value="2">Amravati</option>
-                                        
-                                    </select>
-                                </div> -->
-                                <!-- <div class="col-md-2">
-                                    <label for="inputFirstName" class="form-label">Add Location</label>
-                                    <input type="text" class="form-control" id="inputFirstName" placeholder="Add Location">
-                                </div> -->
-                                <div class="col-md-2">
-                                    <label for="inputFirstName" class="form-label">Select Categories</label>
+                               
+                                   {{-- <div class="col-md-2">
+                                 <label for="inputFirstName" class="form-label">Select Categories</label>
                                     <select class="form-select mb-3" aria-label="Default select example" id="category">
                                         <option value="">Select</option>
                                         @foreach ($cat as $cat)
@@ -110,30 +99,31 @@
                                         @endforeach
 
                                     </select>
-                                </div>
+                                </div> --}}
+
                                 <div class="col-md-2">
                                     <label for="inputFirstName" class="form-label">Straight pay hours</label>
                                     <input type="number" step="0.001" class="form-control total_hr" id="straight"
-                                        placeholder="Straight Pay hours">
+                                        placeholder="Straight Pay hours" name="straight_pay_hours">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="inputFirstName" class="form-label">Overtime 1.5 pay hours</label>
                                     <input type="number" step="0.001" class="form-control total_hr" id="overtime1"
-                                        placeholder="Overtime 1.5 pay hours">
+                                        placeholder="Overtime 1.5 pay hours" name="overtime_hours1">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="inputFirstName" class="form-label">Overtime 2.0 pay hours</label>
                                     <input type="number" step="0.001" class="form-control total_hr" id="overtime2"
-                                        placeholder="Overtime 2.0 pay hours">
+                                        placeholder="Overtime 2.0 pay hours" name="overtime_hours2">
                                 </div>
-                                <div class="col-md-2">
+                                {{-- <div class="col-md-2">
                                     <label for="inputFirstName" class="form-label">Night pay hours</label>
                                     <input type="number" step="0.001" class="form-control total_hr" id="nighthours"
                                         placeholder="Night hours pay">
                                 </div>
                                 <div class="col-md-2" style="margin-top: 6vh;">
                                     <button type="button" class="btn btn-primary px-3 add-row">ADD</button>
-                                </div>
+                                </div> --}}
                                 <div class="row d-none" id="total_hr_error">
                                     <p class="error">Total hours should not exceed 24 hours.
                                     <p>
@@ -144,7 +134,7 @@
                                 </div>
 
                                 <!-- <div class="row"> -->
-                                <div class="col-xl-12 mx-auto">
+                                <div class="col-xl-12 mx-auto d-none">
 
                                     <div class="card">
                                         <div class="card-body">
@@ -157,7 +147,7 @@
                                                         <th scope="col">Straight pay hours</th>
                                                         <th scope="col">Overtime 1.5 pay hours</th>
                                                         <th scope="col">Overtime 2.0 pay hours</th>
-                                                        <th scope="col">Night hours pay hours</th>
+                                                        {{-- <th scope="col">Night hours pay hours</th> --}}
                                                         <th scope="col">Action</th>
                                                     </tr>
                                                 </thead>
@@ -181,6 +171,7 @@
                                     </div>
 
                                 </div>
+
                                 <!-- </div> -->
                                 <!-- <div class="col-md-3">
                                     <div class="form-check">
@@ -235,13 +226,14 @@
                                         <td>{{ $company->contact_number }}</td>
 
                                         <td style="background-color:#ffffff;">
-                                            <button type="button" class="btn1 btn-outline-primary"><i
+                                            {{-- <button type="button" class="btn1 btn-outline-primary"><i
                                                     class='fadeIn animated bx bx-message-add' data-bs-toggle="modal"
-                                                    data-bs-target="#exampleLargeModal"></i></button>
+                                                    data-bs-target="#exampleLargeModal"></i></button> --}}
                                             <button type="button" class="btn1 btn-outline-primary"><i
                                                     class='bx bx-edit-alt me-0'></i></button>
-                                            <button type="button" class="btn1 btn-outline-danger"><i
-                                                    class='bx bx-trash me-0'></i></button>
+                                           
+                                                <a href="{{route('master.delete_company',$company->id)}}"> <button type="button" class="btn1 btn-outline-danger"><i class='bx bx-trash me-0'></i></button></a>
+                                                
                                         </td>
                                     </tr>
                                 @endforeach
@@ -263,6 +255,46 @@
 @section('js')
     <script>
         $(document).ready(function() {
+
+            $("#myForm2").validate({
+                rules: {
+                    company_name: "required",
+                    transit_number: "required",
+                    institution_number: "required",
+                    account_number: "required",
+                    address: "required",
+                    zip: "required",
+                    contact_person: "required",
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    contact_number: "required"
+                },
+                messages: {
+                    company_name: "Please enter the company name",
+                    transit_number: "Please enter the transit number",
+                    institution_number: "Please enter the institution number",
+                    account_number: "Please enter the account number",
+                    address: "Please enter the address",
+                    zip: "Please enter the ZIP code",
+                    contact_person: "Please enter the contact person's name",
+                    email: {
+                        required: "Please enter an email address",
+                        email: "Please enter a valid email address"
+                    },
+                    contact_number: "Please enter the contact number"
+                },
+                
+                submitHandler: function(form) {
+                    // This function runs when the form is submitted and has passed validation
+                    // You can perform additional actions here or submit the form via AJAX, etc.
+                    // For this example, we'll just submit the form.
+                    form.submit();
+                }
+            });
+
+
             $(document).on('keyup', '.total_hr', function() {
                 let total_hr = 0;
                 $(".total_hr").each(function(key, value) {
@@ -273,10 +305,10 @@
                 })
 
                 if (total_hr > 24) {
-                    $(".add-row").prop("disabled", true);
+                    $("form button").prop("disabled", true);
                     $("#total_hr_error").removeClass('d-none');
                 } else {
-                    $(".add-row").prop("disabled", false);
+                    $("form button").prop("disabled", false);
                     $("#total_hr_error").addClass('d-none');
                 }
             })

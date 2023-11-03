@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AssignJobModel;
+use App\Models\JobAssignedTimeMaster;
 use App\Models\Master\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -11,6 +12,7 @@ use DB;
 use App\Models\Master\Category;
 use App\Models\Master\Employeeappend;
 use App\Models\Master\Companyappend;
+use App\Models\Master\TimeMaster;
 
 class AssignjobController extends Controller
 {
@@ -29,13 +31,12 @@ class AssignjobController extends Controller
     }
 
     public function insert_assign_job(Request $request){
-        $check_employee_category=Employeeappend::where('select_categories',$request->payout_category_id)->exists();
-        $check_company_category=Companyappend::where('select_categories',$request->payout_category_id)->exists();
-        if(!$check_employee_category && !$check_company_category){
-            return back()->with(['error'=>'The company and employee both must have same payout information for billling.']);
-
-         }
-     
+        // $check_employee_category=Employeeappend::where('select_categories',$request->payout_category_id)->exists();
+        // $check_company_category=Companyappend::where('select_categories',$request->payout_category_id)->exists();
+        // if(!$check_employee_category && !$check_company_category){
+        //     return back()->with(['error'=>'The company and employee both must have same payout information for billling.']);
+        //  }
+            
         $validator = Validator::make(
             $request->all(),
             [
@@ -80,7 +81,7 @@ class AssignjobController extends Controller
             $status='1';
             $Job_Acceptreject=Employee::find($request->employee_id)->Job_Acceptreject;
             $Job_Acceptreject=='0' ? $status='2' :$status='1';
-            AssignJobModel::create([
+            $insert=AssignJobModel::create([
                 'date'=>$request->date,
                 'location_id'=>$request->location_id,
                 'company_id'=>$request->company_id,
@@ -96,7 +97,15 @@ class AssignjobController extends Controller
                 'payout_category_id'=> $request->payout_category_id,
 
             ]);
-            return back()->with(['success'=>'Date inserted successfully.']);
+            $time_master=TimeMaster::first();
+            JobAssignedTimeMaster::create([
+               'day_start_time' => $time_master->day_start_time,
+               'day_end_time' => $time_master->day_end_time,
+               'night_start_time' => $time_master->night_start_time,
+               'night_end_time' => $time_master->night_end_time,
+               'job_id' => $insert->id, 
+           ]);
+            return back()->with(['success'=>'Job assigned successfully.']);
 
     }
 
@@ -165,7 +174,7 @@ class AssignjobController extends Controller
                 'status'=>$status,
                 'payrun_id'=> $request->payrun_id
             ]);
-            return redirect()->route('assignjob')->with(['success'=>'Date updated successfully.']);
+            return redirect()->route('assignjob')->with(['success'=>'Job updated successfully.']);
     }
 
     public function reassign_job(Request $request){

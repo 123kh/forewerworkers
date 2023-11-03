@@ -145,8 +145,10 @@
                                 Federal Tax Rebate</a>
                         </li>
                         <li> <a href="{{ route('taxmaster.othertax') }}"><i class="bx bx-right-arrow-alt"></i>Other
-                                Taxes </a>
-                        </li>
+                            Taxes </a>
+                    </li>
+                      <li> <a href="{{ route('time-master') }}"><i class="bx bx-right-arrow-alt"></i>Time Master </a>
+                </li>
 
 
                     </ul>
@@ -436,7 +438,7 @@
     <script src="{{ asset('plugins/select2/js/select2.min.js') }}"></script>
 
     <script src="{{ asset('js/form-select2.js') }}"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js" integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!--app JS-->
     <script src="{{ asset('js/app.js') }}"></script>
     <script>

@@ -31,6 +31,9 @@ class EmployeeController extends Controller
                 'address_proof' => ['required'],
                 'DOB' => ['required'],
                 'sin' => ['required'],
+                'straight_pay_hours' => ['required'],
+                //'overtime_hours1' => ['required'],
+                //'overtime_hours2' => ['required'],
                 
             ],
             [
@@ -44,6 +47,9 @@ class EmployeeController extends Controller
                 'address_proof.required' => 'Please enter address proof.',
                 'DOB.required' => 'Please enter DOB.',
                 'sin.required' => 'Please enter sin.',
+                'straight_pay_hours.required' => 'Please enter straight pay hours.',
+                //'overtime_hours1.required' => 'Please enter overtime 1 hours.',
+                //'overtime_hours2.required' => 'Please enter overtime 2 hours.',
             ]);
             if ($validator->fails()) {
                 $errors = '';
@@ -53,9 +59,9 @@ class EmployeeController extends Controller
                 }
                 return back()->with(['error'=>$errors]);
             }
-            if($request->select_categories==null || (!isset($request->select_categories) && count($request->select_categories)<1)){
-                return back()->with(['error'=>'Please add atleast one payout.']);
-            }
+            // if($request->select_categories==null || (!isset($request->select_categories) && count($request->select_categories)<1)){
+            //     return back()->with(['error'=>'Please add atleast one payout.']);
+            // }
             $destination=public_path().'/uploads/employee/';
            
             if ($request->hasFile('address_proof')) {
@@ -93,19 +99,26 @@ class EmployeeController extends Controller
         // 'Only_Straight_hours'=>'1',
        $com->save(); 
         $insert_id=$com->id;
-        for($i=0;$i<count($request->select_categories); $i++){
+       // for($i=0;$i<count($request->select_categories); $i++){
         $comappend=new Employeeappend;
         $comappend->employee_id=$insert_id;
-        $comappend->select_categories=$request->select_categories[$i];
-        $comappend->straight_pay_hours=$request->straight_pay_hours[$i];
-        $comappend->overtime_hours1=$request->overtime_hours1[$i];
-        $comappend->overtime_hours2=$request->overtime_hours2[$i];
-        $comappend->night_hours_pay=$request->night_hours_pay[$i];
+        //$comappend->select_categories=$request->select_categories[$i];
+        $comappend->straight_pay_hours=$request->straight_pay_hours;
+        $comappend->overtime_hours1=$request->overtime_hours1;
+        $comappend->overtime_hours2=$request->overtime_hours2;
+        //$comappend->night_hours_pay=$request->night_hours_pay;
         $comappend->save();
-    }
+   // }
    
     return back()->with(['success'=>'Data inserted successfully.']);
 }
 
+
+public function delete_company($id){
+    Employee::where('id',$id)->delete();
+    Employeeappend::where('employee_id',$id)->delete();
+    return back()->with(['success'=>'Record deleted successfully.']);
+
+}
 
 }

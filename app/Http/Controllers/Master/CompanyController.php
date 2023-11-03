@@ -31,6 +31,9 @@ class CompanyController extends Controller
             'contact_person' => ['required'],
             'email' => ['required'],
             'contact_number' => ['required'],
+            'straight_pay_hours' => ['required'],
+            'overtime_hours1' => ['required'],
+            'overtime_hours2' => ['required'],
         ],
         [
             'location.required' => 'Please enter location.',
@@ -42,7 +45,10 @@ class CompanyController extends Controller
             'zip.required' => 'Please enter zip.',
             'contact_person.required' => 'Please enter contact person.',
             'email.required' => 'Please enter email.',
-            'contact_number.required' => 'Please enter contact number.'
+            'contact_number.required' => 'Please enter contact number.',
+            'straight_pay_hours.required' => 'Please enter straight pay hours.',
+            'overtime_hours1.required' => 'Please enter overtime 1 hours.',
+            'overtime_hours2.required' => 'Please enter overtime 2 hours.'
         ]);
         if ($validator->fails()) {
             $errors = '';
@@ -52,9 +58,9 @@ class CompanyController extends Controller
             }
             return back()->with(['error'=>$errors]);
         }
-        if($request->select_categories==null || (!isset($request->select_categories) && count($request->select_categories)<1)){
-            return back()->with(['error'=>'Please add atleast one payout.']);
-        }
+        // if($request->select_categories==null || (!isset($request->select_categories) && count($request->select_categories)<1)){
+        //     return back()->with(['error'=>'Please add atleast one payout.']);
+        // }
         
         $com=new Companyres;
         $com->company_name=$request->get('company_name');
@@ -71,17 +77,24 @@ class CompanyController extends Controller
     
         $insert_id=$com->id;
     
-        for($i=0;$i<count($request->select_categories); $i++){
+    //     for($i=0;$i<count($request->select_categories); $i++){
         $comappend=new Companyappend;
         $comappend->company_id=$insert_id;
-        $comappend->select_categories=$request->select_categories[$i];
-        $comappend->straight_pay_hours=$request->straight_pay_hours[$i];
-        $comappend->overtime_hours1=$request->overtime_hours1[$i];
-        $comappend->overtime_hours2=$request->overtime_hours2[$i];
-        $comappend->night_hours_pay=$request->night_hours_pay[$i];
+       // $comappend->select_categories=$request->select_categories[$i];
+        $comappend->straight_pay_hours=$request->straight_pay_hours;
+        $comappend->overtime_hours1=$request->overtime_hours1;
+        $comappend->overtime_hours2=$request->overtime_hours2;
+       // $comappend->night_hours_pay=$request->night_hours_pay[$i];
         $comappend->save();
-    }
+    // }
     return back()->with(['success'=>'data inserted successfully.']);
+
+    }
+
+    public function delete_company($id){
+        Companyres::where('id',$id)->delete();
+        Companyappend::where('company_id',$id)->delete();
+        return back()->with(['success'=>'Record deleted successfully.']);
 
     }
 

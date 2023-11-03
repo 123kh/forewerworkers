@@ -43,17 +43,17 @@ class AssignJobModel extends Model
 
     public function getCompanyNameAttribute()
     {
-        return ucWords(Companyres::find($this->company_id)->company_name);
+        return ucWords(Companyres::find($this->company_id)->company_name ?? '');
     }
 
     public function getLocationNameAttribute()
     {
-        return isset(Location::find($this->location_id)->location) ? ucWords(Location::find($this->location_id)->location) : '';
+        return ucWords(Location::find($this->location_id)->location ?? '') ;
     }
 
     public function getEmployeeNameAttribute()
     {
-        return ucWords(Employee::find($this->employee_id)->employee_name);
+        return ucWords(Employee::find($this->employee_id)->employee_name ?? '');
     }
     public function getEmployeeInfoAttribute()
     {
@@ -76,7 +76,7 @@ class AssignJobModel extends Model
         return $total_work_time;
     }
 
-    public function getApproxPayAttribute()
+    public function getApproxPay2Attribute()
     {
         $total_pay = 0;
         $total_hr_min = 0;
@@ -86,6 +86,106 @@ class AssignJobModel extends Model
             $diff_in_minutes = $from->diffInMinutes($to);
             //$total_hr = round($diff_in_minutes / 60);
             $total_hr_min = round($diff_in_minutes);
+
+            $employee_payout = DB::table('employeesappend')->where('select_categories', $this->payout_category_id)->where('employee_id', $this->employee_id)->orderby('id', 'asc')->first();
+            $company_payout = DB::table('companysregsappend')->where('select_categories', $this->payout_category_id)->where('company_id', $this->company_id)->orderby('id', 'asc')->first();
+          
+            //if employee work for strainght hr . total pay will be base on amount of straight hr.
+            //pay out by first pay out consideration
+if($employee_payout && $company_payout){
+
+            if ($this->employee_info->Only_Straight_hours == '1') {
+                $total_pay = ($employee_payout->straight_pay_hours / 60) * $total_hr_min;
+            } else {
+                if ($total_hr_min > ($company_payout->straight_pay_hours * 60)) {
+                    $straight_hr_pay = $company_payout->straight_pay_hours * $employee_payout->straight_pay_hours;
+                    $total_hr_min = $total_hr_min - ($company_payout->straight_pay_hours * 60);
+                    $total_pay = $total_pay + $straight_hr_pay;
+
+                    if ($total_hr_min > ($company_payout->overtime_hours1 * 60)) {
+                        $overtime_hours1_pay = $company_payout->overtime_hours1 * $employee_payout->overtime_hours1;
+                        $total_hr_min = $total_hr_min - ($company_payout->overtime_hours1 * 60);
+                        $total_pay = $total_pay + $overtime_hours1_pay;
+
+
+                        if ($total_hr_min > ($company_payout->overtime_hours2 * 60)) {
+                            $overtime_hours2_pay = $company_payout->overtime_hours2 * $employee_payout->overtime_hours2;
+                            $total_hr_min = $total_hr_min - ($company_payout->overtime_hours2 * 60);
+                            $total_pay = $total_pay + $overtime_hours2_pay;
+
+
+                            if ($total_hr_min > ($company_payout->night_hours_pay * 60)) {
+                                $night_hours_pay = $company_payout->night_hours_pay * $employee_payout->night_hours_pay;
+                                $total_hr_min = $total_hr_min - ($company_payout->night_hours_pay * 60);
+                                $total_pay = $total_pay + $night_hours_pay;
+                            } else {
+                                $night_hours_pay = $total_hr_min * ($employee_payout->night_hours_pay / 60);
+                                $total_pay = $total_pay + $night_hours_pay;
+                            }
+                        } else {
+                            $overtime_hours2_pay = $total_hr_min * ($employee_payout->overtime_hours2 / 60);
+                            $total_pay = $total_pay + $overtime_hours2_pay;
+                        }
+                    } else {
+                        $overtime_hours1_pay = $total_hr_min * ($employee_payout->overtime_hours1 / 60);
+                        $total_pay = $total_pay + $overtime_hours1_pay;
+                    }
+                } else {
+                    $straight_hr_pay = $total_hr_min * ($employee_payout->straight_pay_hours / 60);
+                    $total_pay = $total_pay + $straight_hr_pay;
+                }
+}
+
+            }
+        }
+        return round($total_pay);
+    }
+
+    public function getApproxPayAttribute()
+    {
+        $total_pay = 0;
+        $total_hr_min = 0;
+        if ($this->status == '3' && $this->check_in_time && $this->check_out_time) {
+        $check_in_time = \Carbon\Carbon::parse($this->check_in_time)->format('H:i:s');
+        $check_out_time = \Carbon\Carbon::parse($this->check_out_time)->format('H:i:s');
+        
+
+        $time = JobAssignedTimeMaster::where('job_id', $this->id)->first();
+
+        // Define the day and night time slots
+        $dayStartTime = \Carbon\Carbon::createFromFormat('H:i:s', $time->day_start_time);
+        $dayEndTime = \Carbon\Carbon::createFromFormat('H:i:s', $time->day_end_time);
+        $checkin = \Carbon\Carbon::createFromFormat('H:i:s', $check_in_time);
+        $checkout = \Carbon\Carbon::createFromFormat('H:i:s', $check_out_time);
+
+        // Calculate the time duration of the day
+        $day_duration = $dayStartTime->diffInHours($dayEndTime);
+
+        if ($dayStartTime <= $checkin && $checkin <= $dayEndTime && $dayStartTime <= $checkout && $checkout <= $dayEndTime) {
+            // Calculate the hours worked
+            $hours_worked = $checkout->diffInHours($checkin);
+
+            dump($hours_worked);
+        } else {
+            dump(12);
+        }
+        $nightStartTime = \Carbon\Carbon::createFromFormat('H:i:s', $time->night_start_time);
+        $nightEndTime = \Carbon\Carbon::createFromFormat('H:i:s', $time->night_end_time);
+
+        // Initialize counters for day and night slots
+       
+        dump($dayStartTime);
+        dump($dayEndTime);
+
+        dump($check_in_time);
+        dump($check_out_time);
+
+            $diff_in_minutes = $check_in_time->diffInMinutes($check_out_time);
+            $total_hr = round($diff_in_minutes / 60);
+            return $total_hr;
+
+            $total_hr_min = round($diff_in_minutes);
+            return;
 
             $employee_payout = DB::table('employeesappend')->where('select_categories', $this->payout_category_id)->where('employee_id', $this->employee_id)->orderby('id', 'asc')->first();
             $company_payout = DB::table('companysregsappend')->where('select_categories', $this->payout_category_id)->where('company_id', $this->company_id)->orderby('id', 'asc')->first();
