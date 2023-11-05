@@ -66,7 +66,7 @@
                                     </select>
                                 </div>
 
-                                <div class="col-md-2">
+                                {{-- <div class="col-md-2">
                                     <label for="inputFirstName" class="form-label">Select Payout Category</label>
                                     <select name="payout_category_id" class="single-select mb-3" aria-label="Default select example">
                                         <option value="" selected>Select Payout Category</option>
@@ -77,7 +77,7 @@
                                         @endforeach
 
                                     </select>
-                                </div>
+                                </div> --}}
 
                                 
                                 <div class="col-md-2">

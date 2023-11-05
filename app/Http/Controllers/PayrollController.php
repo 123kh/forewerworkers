@@ -11,8 +11,8 @@ class PayrollController extends Controller
         $paginate_length=10;
         if(isset($request->paginate_length) && $request->paginate_length!=null)
         $paginate_length=$request->paginate_length;
-        $locations=get_location();
-        $companies=get_company();
+       // $locations=get_location();
+        //$companies=get_company();
         $employees=get_employee();
         
         $all_jobs=AssignJobModel::
@@ -40,7 +40,7 @@ class PayrollController extends Controller
         ->CompletedJob() //CompletedJob() is a scope define in model in which condition is written
         ->orderby('id','desc')->groupby('employee_id')->paginate($paginate_length);
         //exit();
-        return view('payroll.payroll',compact('locations','companies','employees','all_jobs'));
+        return view('payroll.payroll',compact('employees','all_jobs'));
     }
 
 
@@ -56,8 +56,6 @@ class PayrollController extends Controller
         $get_employee_job_months_last = AssignJobModel::where('status', '3')->where('employee_id', $job->employee_id)
         ->whereYear('date', '=', date('Y'))
         ->select('date')->orderby('date','desc')->first();
-        
-      
        // $pdf=PDF::loadView('payroll.payroll-print',['job'=>$job]);
 
        // return $pdf->download('Payroll-' . time() . '.pdf');

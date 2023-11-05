@@ -32,8 +32,8 @@
     @php
   $month_pay=$job->month_approx_pay['payout']['total_pay'];
   $total_month_hr=number_format(array_sum(Arr::flatten($job->month_approx_pay['hr_breakout'])),2);
+ 
   $month_pay_total=$job->previous_month_approx_pay['total_pay'];
-
   $get_employee_payout=get_employee_payout($job->id);
 
   $vacation_pay=vacation_pay($job->id,$month_pay);
@@ -49,9 +49,9 @@
   $ELTax_total=number_format(get_ELTax($job->id,$gross_pay_total),2);
   $CPPTax_total=number_format(get_CPPTax($job->id,$gross_pay_total),2);
   $Tax_total=number_format(get_Tax($job->id,$gross_pay_total),2);
-  
-  $withheld=$ELTax+$CPPTax+$Tax+$vacation_pay;
-  $withheld_total=$ELTax_total+$CPPTax_total+$Tax_total+$vacation_pay_total;
+  $withheld=$ELTax+((float)str_replace(',', '', $CPPTax))+$Tax+$vacation_pay;
+
+  $withheld_total=$ELTax_total+((float)str_replace(',', '', $CPPTax_total))+$Tax_total+$vacation_pay_total;
 
   $net_pay=$month_pay-$withheld;
   $net_pay_total=$month_pay_total-$withheld_total;
@@ -122,36 +122,36 @@
           
 
           @if(isset($job->month_approx_pay['payout']['straight_pay']) && $job->month_approx_pay['payout']['straight_pay']>0)
-          <span class="font">Regular</span> <span style="margin-left: 13%;border-bottom: 1px solid rgb(0, 0, 0);" class="font"> {{$job->month_approx_pay['payout']['straight_pay']}}</span>
+          <span class="font">Regular</span> <span style="margin-left: 13%;" class="font"> {{$job->month_approx_pay['payout']['straight_pay']}}</span>
           <span
-           style="margin-left: 28%;border-bottom: 1px solid rgb(0, 0, 0);" class="font">{{$job->previous_month_approx_pay['straight_pay']}}</span><br>
+           style="margin-left: 28%;" class="font">{{$job->previous_month_approx_pay['straight_pay']}}</span><br>
          <span class="font"></span> <span style="margin-left: 13%;" class="font"> </span> <span style="margin-left: 28%;"
            class="font"></span><br>
            @endif
 
           @if(isset($job->month_approx_pay['payout']['overtime_hours1_pay']) && $job->month_approx_pay['payout']['overtime_hours1_pay']>0)
-           <span class="font">Overtime 1</span> <span style="margin-left: 10%;border-bottom: 1px solid rgb(0, 0, 0);" class="font"> {{$job->month_approx_pay['payout']['overtime_hours1_pay']}}</span>
+           <span class="font">Overtime 1</span> <span style="margin-left: 10%;" class="font"> {{$job->month_approx_pay['payout']['overtime_hours1_pay']}}</span>
            <span
-            style="margin-left: 28%;border-bottom: 1px solid rgb(0, 0, 0);" class="font">{{$job->previous_month_approx_pay['overtime_hours1_pay']}}</span><br>
+            style="margin-left: 28%;" class="font">{{$job->previous_month_approx_pay['overtime_hours1_pay']}}</span><br>
           <span class="font"></span> <span style="margin-left: 13%;" class="font"> </span> <span style="margin-left: 28%;"
             class="font"></span><br>
             @endif
 
             @if(isset($job->month_approx_pay['payout']['overtime_hours2_pay']) && $job->month_approx_pay['payout']['overtime_hours2_pay']>0)
-            <span class="font">Overtime 2</span> <span style="margin-left: 10%;border-bottom: 1px solid rgb(0, 0, 0);" class="font"> {{$job->month_approx_pay['payout']['overtime_hours2_pay']}}</span>
+            <span class="font">Overtime 2</span> <span style="margin-left: 10%;" class="font"> {{$job->month_approx_pay['payout']['overtime_hours2_pay']}}</span>
             <span
-             style="margin-left: 28%;border-bottom: 1px solid rgb(0, 0, 0);" class="font">{{$job->previous_month_approx_pay['overtime_hours2_pay']}}</span><br>
+             style="margin-left: 28%;" class="font">{{$job->previous_month_approx_pay['overtime_hours2_pay']}}</span><br>
            <span class="font"></span> <span style="margin-left: 10%;" class="font"> </span> <span style="margin-left: 28%;"
              class="font"></span><br>
              @endif
 
-             @if(isset($job->month_approx_pay['payout']['night_hours_pay']) && $job->month_approx_pay['payout']['night_hours_pay']>0)
+             {{-- @if(isset($job->month_approx_pay['payout']['night_hours_pay']) && $job->month_approx_pay['payout']['night_hours_pay']>0)
              <span class="font">Night Hours Pay</span> <span style="margin-left: 5%;border-bottom: 1px solid rgb(0, 0, 0);" class="font"> {{$job->month_approx_pay['payout']['night_hours_pay']}}</span>
              <span
               style="margin-left: 28%;border-bottom: 1px solid rgb(0, 0, 0);" class="font">{{$job->previous_month_approx_pay['night_hours_pay']}}</span><br>
             <span class="font"></span> <span style="margin-left: 10%;" class="font"> </span> <span style="margin-left: 28%;"
               class="font"></span><br>
-              @endif
+              @endif --}}
 
               <span class="font">Vacation Paid</span> <span style="margin-left: 5%;border-bottom: 1px solid rgb(0, 0, 0);" class="font"> {{$vacation_pay}}</span>
               <span
@@ -162,7 +162,26 @@
         <span class="font"></span> <span style="margin-left: 10%;" class="font"> </span> <span style="margin-left: 28%;"
           class="font"></span><br><br>
         <span class="font">Gross Pay</span> <span style="margin-left: 9%;" class="font"> {{$gross_pay}}</span> <span
-          style="margin-left: 27%;" class="font">{{$gross_pay_total}}</span><br><br><br>
+          style="margin-left: 27%;" class="font">{{$gross_pay_total}}</span><br>
+          
+          <span class="font">Vacation Earned</span> <span style="margin-left: 5%;" class="font"> {{$vacation_pay}}</span>
+          <span
+           style="margin-left: 28%;" class="font">{{$vacation_pay_total}}</span><br>
+         <span class="font"></span> <span style="margin-left: 10%;" class="font"> </span> <span style="margin-left: 28%;"
+           class="font"></span><br>
+           <span class="font">Vacation Paid</span> <span style="margin-left: 5%;" class="font"> {{$vacation_pay}}</span>
+           <span
+            style="margin-left: 28%;" class="font">{{$vacation_pay_total}}</span><br>
+          <span class="font"></span> <span style="margin-left: 10%;" class="font"> </span> <span style="margin-left: 28%;"
+            class="font"></span><br>
+            <span class="font">Vacation Owed</span> <span style="margin-left: 5%;" class="font"> </span>
+            <span
+             style="margin-left: 28%;" class="font">0</span><br>
+           <span class="font"></span> <span style="margin-left: 10%;" class="font"> </span> <span style="margin-left: 28%;"
+             class="font"></span><br>
+
+
+          <br><br>
       </td>
       <td class="td">
         <span style="margin-left: 30%;" class="font"> <b>Period</b> </span> <span style="margin-left: 33%;"
@@ -186,25 +205,39 @@
 
         <span class="font">Net Pay</span> <span style="margin-left: 15%;" class="font"> {{$net_pay}}</span> <span
           style="margin-left: 33%;" class="font">{{$net_pay_total}}</span><br>
-        <span class="font">EI Insurable <br> Hours
-        </span> <span style="margin-left: 25%;" class="font"> {{$total_month_hr}}</span> <br><br>
+        <span class="font" style="margin-top:1%;">EI Insurable <br> Hours
+        </span> <span style="margin-left: 25%;" class="font"> {{$total_month_hr}}</span> <br> <br>
         
-        @if(isset($job->month_approx_pay['hr_breakout'][0]) && isset($job->month_approx_pay['hr_breakout'][0]['straight_hr']) && $job->month_approx_pay['hr_breakout'][0]['straight_hr']>0)
-        <span class="font"> Regular: {{number_format($job->month_approx_pay['hr_breakout'][0]['straight_hr'],2)}} @ {{number_format($get_employee_payout->straight_pay_hours,2)}}/Hr</span><br><br><br>
+       @php
+        $data = $job->month_approx_pay['hr_breakout'];
+        $straight_hr_array = array_filter($data, function ($item) {
+          return isset($item['straight_hr']);
+        });
+        $overtime_hours1_array = array_filter($data, function ($item) {
+          return isset($item['overtime_hours1']);
+        });
+        $overtime_hours2_array = array_filter($data, function ($item) {
+          return isset($item['overtime_hours2']);
+        });
+       
+       @endphp  
+        
+        @if(!empty($straight_hr_array))
+        <span class="font"> Regular: {{number_format(reset($straight_hr_array)['straight_hr'],2)}} @ {{number_format($get_employee_payout->straight_pay_hours,2)}}/Hr</span><br>
         @endif
 
 
-        @if(isset($job->month_approx_pay['hr_breakout'][1]) && isset($job->month_approx_pay['hr_breakout'][1]['overtime_hours1']) && $job->month_approx_pay['hr_breakout'][1]['overtime_hours1']>0)
-        <span class="font"> Overtime 1: {{number_format($job->month_approx_pay['hr_breakout'][1]['overtime_hours1'],2)}} @ {{number_format($get_employee_payout->overtime_hours1,2)}}/Hr</span><br><br><br>
+        @if(!empty($overtime_hours1_array))
+        <span class="font"> Overtime 1: {{number_format(reset($overtime_hours1_array)['overtime_hours1'],2)}} @ {{number_format($get_employee_payout->overtime_hours1,2)}}/Hr</span><br>
         @endif
 
-        @if(isset($job->month_approx_pay['hr_breakout'][2]) && isset($job->month_approx_pay['hr_breakout'][2]['overtime_hours2']) && $job->month_approx_pay['hr_breakout'][2]['overtime_hours2']>0)
-        <span class="font"> Overtime 2: {{number_format($job->month_approx_pay['hr_breakout'][2]['overtime_hours2'],2)}} @ {{number_format($get_employee_payout->overtime_hours2,2)}}/Hr</span><br><br><br>
+        @if(!empty($overtime_hours2_array))
+        <span class="font"> Overtime 2: {{number_format(reset($overtime_hours2_array)['overtime_hours2'],2)}} @ {{number_format($get_employee_payout->overtime_hours2,2)}}/Hr</span><br>
         @endif
 
-        @if(isset($job->month_approx_pay['hr_breakout'][3]) && isset($job->month_approx_pay['hr_breakout'][3]['night_hours_pay']) && $job->month_approx_pay['hr_breakout'][3]['night_hours_pay']>0)
+        {{-- @if(isset($job->month_approx_pay['hr_breakout'][3]) && isset($job->month_approx_pay['hr_breakout'][3]['night_hours_pay']) && $job->month_approx_pay['hr_breakout'][3]['night_hours_pay']>0)
         <span class="font"> Overtime 3: {{number_format($job->month_approx_pay['hr_breakout'][3]['night_hours_pay'],2)}} @ {{number_format($get_employee_payout->night_hours_pay,2)}}/Hr</span><br><br><br>
-        @endif
+        @endif --}}
 
 
       </td>
@@ -220,6 +253,7 @@
       <td class="font1">{{\Carbon\Carbon::createFromFormat('Y-m-d',$job->date)->format('My')}}
       </td>
     </tr>
+   
     <tr>
       <td class="font1">Pay Period:
 
@@ -230,6 +264,7 @@
       <td></td>
     </tr>
   </table>
+
   <table style="width:100%;" class="table">
     <tr>
       <td class="td">
@@ -238,36 +273,36 @@
           
 
           @if(isset($job->month_approx_pay['payout']['straight_pay']) && $job->month_approx_pay['payout']['straight_pay']>0)
-          <span class="font">Regular</span> <span style="margin-left: 13%;border-bottom: 1px solid rgb(0, 0, 0);" class="font"> {{$job->month_approx_pay['payout']['straight_pay']}}</span>
+          <span class="font">Regular</span> <span style="margin-left: 13%;" class="font"> {{$job->month_approx_pay['payout']['straight_pay']}}</span>
           <span
-           style="margin-left: 28%;border-bottom: 1px solid rgb(0, 0, 0);" class="font">{{$job->previous_month_approx_pay['straight_pay']}}</span><br>
+           style="margin-left: 28%;" class="font">{{$job->previous_month_approx_pay['straight_pay']}}</span><br>
          <span class="font"></span> <span style="margin-left: 13%;" class="font"> </span> <span style="margin-left: 28%;"
            class="font"></span><br>
            @endif
 
           @if(isset($job->month_approx_pay['payout']['overtime_hours1_pay']) && $job->month_approx_pay['payout']['overtime_hours1_pay']>0)
-           <span class="font">Overtime 1</span> <span style="margin-left: 10%;border-bottom: 1px solid rgb(0, 0, 0);" class="font"> {{$job->month_approx_pay['payout']['overtime_hours1_pay']}}</span>
+           <span class="font">Overtime 1</span> <span style="margin-left: 10%;" class="font"> {{$job->month_approx_pay['payout']['overtime_hours1_pay']}}</span>
            <span
-            style="margin-left: 28%;border-bottom: 1px solid rgb(0, 0, 0);" class="font">{{$job->previous_month_approx_pay['overtime_hours1_pay']}}</span><br>
+            style="margin-left: 28%;" class="font">{{$job->previous_month_approx_pay['overtime_hours1_pay']}}</span><br>
           <span class="font"></span> <span style="margin-left: 13%;" class="font"> </span> <span style="margin-left: 28%;"
             class="font"></span><br>
             @endif
 
             @if(isset($job->month_approx_pay['payout']['overtime_hours2_pay']) && $job->month_approx_pay['payout']['overtime_hours2_pay']>0)
-            <span class="font">Overtime 2</span> <span style="margin-left: 10%;border-bottom: 1px solid rgb(0, 0, 0);" class="font"> {{$job->month_approx_pay['payout']['overtime_hours2_pay']}}</span>
+            <span class="font">Overtime 2</span> <span style="margin-left: 10%;" class="font"> {{$job->month_approx_pay['payout']['overtime_hours2_pay']}}</span>
             <span
-             style="margin-left: 28%;border-bottom: 1px solid rgb(0, 0, 0);" class="font">{{$job->previous_month_approx_pay['overtime_hours2_pay']}}</span><br>
+             style="margin-left: 28%;" class="font">{{$job->previous_month_approx_pay['overtime_hours2_pay']}}</span><br>
            <span class="font"></span> <span style="margin-left: 10%;" class="font"> </span> <span style="margin-left: 28%;"
              class="font"></span><br>
              @endif
 
-             @if(isset($job->month_approx_pay['payout']['night_hours_pay']) && $job->month_approx_pay['payout']['night_hours_pay']>0)
+             {{-- @if(isset($job->month_approx_pay['payout']['night_hours_pay']) && $job->month_approx_pay['payout']['night_hours_pay']>0)
              <span class="font">Night Hours Pay</span> <span style="margin-left: 5%;border-bottom: 1px solid rgb(0, 0, 0);" class="font"> {{$job->month_approx_pay['payout']['night_hours_pay']}}</span>
              <span
               style="margin-left: 28%;border-bottom: 1px solid rgb(0, 0, 0);" class="font">{{$job->previous_month_approx_pay['night_hours_pay']}}</span><br>
             <span class="font"></span> <span style="margin-left: 10%;" class="font"> </span> <span style="margin-left: 28%;"
               class="font"></span><br>
-              @endif
+              @endif --}}
 
               <span class="font">Vacation Paid</span> <span style="margin-left: 5%;border-bottom: 1px solid rgb(0, 0, 0);" class="font"> {{$vacation_pay}}</span>
               <span
@@ -278,7 +313,26 @@
         <span class="font"></span> <span style="margin-left: 10%;" class="font"> </span> <span style="margin-left: 28%;"
           class="font"></span><br><br>
         <span class="font">Gross Pay</span> <span style="margin-left: 9%;" class="font"> {{$gross_pay}}</span> <span
-          style="margin-left: 27%;" class="font">{{$gross_pay_total}}</span><br><br><br>
+          style="margin-left: 27%;" class="font">{{$gross_pay_total}}</span><br>
+          
+          <span class="font">Vacation Earned</span> <span style="margin-left: 5%;" class="font"> {{$vacation_pay}}</span>
+          <span
+           style="margin-left: 28%;" class="font">{{$vacation_pay_total}}</span><br>
+         <span class="font"></span> <span style="margin-left: 10%;" class="font"> </span> <span style="margin-left: 28%;"
+           class="font"></span><br>
+           <span class="font">Vacation Paid</span> <span style="margin-left: 5%;" class="font"> {{$vacation_pay}}</span>
+           <span
+            style="margin-left: 28%;" class="font">{{$vacation_pay_total}}</span><br>
+          <span class="font"></span> <span style="margin-left: 10%;" class="font"> </span> <span style="margin-left: 28%;"
+            class="font"></span><br>
+            <span class="font">Vacation Owed</span> <span style="margin-left: 5%;" class="font"> </span>
+            <span
+             style="margin-left: 28%;" class="font">0</span><br>
+           <span class="font"></span> <span style="margin-left: 10%;" class="font"> </span> <span style="margin-left: 28%;"
+             class="font"></span><br>
+
+
+          <br><br>
       </td>
       <td class="td">
         <span style="margin-left: 30%;" class="font"> <b>Period</b> </span> <span style="margin-left: 33%;"
@@ -301,10 +355,12 @@
           style="margin-left: 30%;border-bottom: 1px solid rgb(0, 0, 0);" class="font">-{{$withheld_total}}</span><br><br>
 
         <span class="font">Net Pay</span> <span style="margin-left: 15%;" class="font"> {{$net_pay}}</span> <span
-          style="margin-left: 33%;" class="font">{{$net_pay_total}}</span><br>
-        <span class="font">EI Insurable <br> Hours
-        </span> <span style="margin-left: 25%;" class="font"> {{$total_month_hr}}</span> <br><br>
-        
+          style="margin-left: 33%;" class="font">{{$net_pay_total}}</span>
+          <br><br>
+          <span class="font" >EI Insurable <br> Hours
+          </span> <span style="margin-left: 25%;" class="font"> {{$total_month_hr}}</span> <br><br>
+
+         
         @if(isset($job->month_approx_pay['hr_breakout'][0]) && isset($job->month_approx_pay['hr_breakout'][0]['straight_hr']) && $job->month_approx_pay['hr_breakout'][0]['straight_hr']>0)
         <span class="font"> Regular: {{number_format($job->month_approx_pay['hr_breakout'][0]['straight_hr'],2)}} @ {{number_format($get_employee_payout->straight_pay_hours,2)}}/Hr</span><br><br><br>
         @endif

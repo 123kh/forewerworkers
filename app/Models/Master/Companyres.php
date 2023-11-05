@@ -10,7 +10,7 @@ class Companyres extends Model
     use HasFactory;
     protected $table="companysregs";
     protected $fillable=[
-        'company_name',
+    'company_name',
     'transit_number',
     'institution_number',
     'account_number',

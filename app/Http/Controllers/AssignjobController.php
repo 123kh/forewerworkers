@@ -51,7 +51,7 @@ class AssignjobController extends Controller
                 'job_end_date' => 'required',
                 'expected_hour' => 'required',
                 'payrun_id' => 'required',
-                'payout_category_id' => 'required',
+               // 'payout_category_id' => 'required',
                 
               
             ],
@@ -67,7 +67,7 @@ class AssignjobController extends Controller
                 'job_end_date.required' => 'Please select job end date.',
                 'expected_hour.required' => 'Please enter expected hour.',
                 'payrun_id.required' => 'Please select Payrun Type.',
-                'payout_category_id.required' => 'Please select Payout Category.',
+                //'payout_category_id.required' => 'Please select Payout Category.',
 
             ]);
             if ($validator->fails()) {
@@ -94,7 +94,7 @@ class AssignjobController extends Controller
                 'expected_hour'=>$request->expected_hour,
                 'status'=>$status,
                 'payrun_id'=> $request->payrun_id,
-                'payout_category_id'=> $request->payout_category_id,
+                //'payout_category_id'=> $request->payout_category_id,
 
             ]);
             $time_master=TimeMaster::first();

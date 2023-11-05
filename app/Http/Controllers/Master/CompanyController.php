@@ -29,7 +29,7 @@ class CompanyController extends Controller
             'address' => ['required'],
             'zip' => ['required'],
             'contact_person' => ['required'],
-            'email' => ['required'],
+            'email' => 'required|email|unique:companysregs,email',
             'contact_number' => ['required'],
             'straight_pay_hours' => ['required'],
             'overtime_hours1' => ['required'],
@@ -45,6 +45,7 @@ class CompanyController extends Controller
             'zip.required' => 'Please enter zip.',
             'contact_person.required' => 'Please enter contact person.',
             'email.required' => 'Please enter email.',
+            'email.unique' => 'The email address is already exist.',
             'contact_number.required' => 'Please enter contact number.',
             'straight_pay_hours.required' => 'Please enter straight pay hours.',
             'overtime_hours1.required' => 'Please enter overtime 1 hours.',
@@ -58,6 +59,7 @@ class CompanyController extends Controller
             }
             return back()->with(['error'=>$errors]);
         }
+
         // if($request->select_categories==null || (!isset($request->select_categories) && count($request->select_categories)<1)){
         //     return back()->with(['error'=>'Please add atleast one payout.']);
         // }

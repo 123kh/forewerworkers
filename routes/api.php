@@ -42,3 +42,5 @@ Route::post('upload_timesheet',[ApiController::class,'upload_timesheet']);
 Route::post('forgot_password_otp',[ApiController::class,'forgot_password_otp']);
 Route::post('update_password',[ApiController::class,'update_password']);
 Route::post('update_password_by_id',[ApiController::class,'update_password_by_id']);
+Route::post('get_payroll',[ApiController::class,'get_payroll']);
+Route::post('get_company_wise_data',[ApiController::class,'get_company_wise_data']);

@@ -100,8 +100,8 @@ if (!function_exists('get_employee_payout')) {
     {
         $get_employee_payout = DB::table('assign_job_models')
         ->join('employeesappend', function ($join) {
-            $join->on('employeesappend.employee_id', '=', 'assign_job_models.employee_id')
-                 ->on('employeesappend.select_categories', '=', 'assign_job_models.payout_category_id');
+            $join->on('employeesappend.employee_id', '=', 'assign_job_models.employee_id');
+                 //->on('employeesappend.select_categories', '=', 'assign_job_models.payout_category_id');
         })
         ->where('assign_job_models.id', $job_id)
         ->first();

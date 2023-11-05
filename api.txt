@@ -40,3 +40,13 @@ password
 9)update_password_by_id
 id
 password
+
+10)get_payroll
+employee_id
+company_id
+from_date
+to_date
+
+11)get_company_wise_data
+employee_id
+
