@@ -289,8 +289,7 @@ class ApiController extends Controller
         }
     }
 
-    public function get_company_wise_data(Request $request)
-    {
+    public function get_company_list(Request $request){
         $validators = Validator::make($request->all(), [
             'employee_id' => 'required',
         ]);
@@ -299,29 +298,23 @@ class ApiController extends Controller
             $validator['messages'] = $validators->errors()->all();
             return response()->json($validator);
         }
-
-        $jobs = AssignJobModel::where([
+       
+        $company=AssignJobModel::where([
             'employee_id' => $request->employee_id,
-        ])->select('company_id')->groupby('company_id')->get();
-
-        $data=[];
-        foreach($jobs as $job){
-            $data[]=[
-                'company_name'=>$job->companyname,
-                'total_hr'=>5,
-                'total_pay'=>10,
-            ];
-        }
-        return response()->json($data);
-
-        if ($jobs->isNotEmpty()) {
-        } else {
+            ])
+            ->join('companysregs','companysregs.id','=','assign_job_models.company_id')
+            ->select('companysregs.id','companysregs.company_name as name')
+            ->groupby('companysregs.id')
+            ->get();
+            if ($company->isNotEmpty()) {
+                return response()->json($company);
+            } else {
             $validator['status'] = false;
-            $validator['messages'] = 'Job does not present.';
+            $validator['messages'] = 'No company found for this user.';
             return response()->json($validator);
         }
     }
-
+   
     public function get_payroll(Request $request)
     {
         $validators = Validator::make($request->all(), [
@@ -353,4 +346,58 @@ class ApiController extends Controller
             return response()->json($validator);
         }
     }
+
+    public function get_company_wise_data(Request $request)
+    {
+        $validators = Validator::make($request->all(), [
+            'employee_id' => 'required',
+        ]);
+        if ($validators->fails()) {
+            $validator['status'] = false;
+            $validator['messages'] = $validators->errors()->all();
+            return response()->json($validator);
+        }
+
+        $jobs = AssignJobModel::where([
+            'employee_id' => $request->employee_id,
+        ])->select('company_id')->groupby('company_id')->get();
+
+        $data = [];
+        foreach ($jobs as $job) {
+            $companyJobs = [
+                'company_name' => $job->companyname,
+                'company_total_hr' => 0, // Initialize total hours
+                'company_total_pay' => 0, // Initialize total pay
+                'jobs' => [],
+            ];
+            $job_detail = AssignJobModel::where([
+                'employee_id' => $request->employee_id,
+                'company_id' => $job->company_id,
+            ])->select('id','date','company_id','employee_id','job_title','status','check_in_time','check_out_time')->get();
+        
+            foreach ($job_detail as $jobDetail) {
+                $companyJobs['jobs'][] = [
+                    'job_name' => $jobDetail->job_title,
+                    'total_hr' => floatval($jobDetail->working_hours),
+                    'total_pay' => $jobDetail->approx_pay,
+                    'job_date' => $jobDetail->date,
+                    'day' => date('l',strtotime($jobDetail->date)),
+                    'hr_rate' => $jobDetail->approx_pay/floatval($jobDetail->working_hours),
+                    // Add more job details as needed
+                ];
+                $companyJobs['company_total_hr'] += floatval($jobDetail->working_hours);
+                $companyJobs['company_total_pay'] += floatval($jobDetail->approx_pay);
+            }
+            $data[] = $companyJobs;
+        }
+
+        if ($jobs->isNotEmpty()) {
+            return response()->json($data);
+        } else {
+            $validator['status'] = false;
+            $validator['messages'] = 'Job does not present.';
+            return response()->json($validator);
+        }
+    }
+
 }

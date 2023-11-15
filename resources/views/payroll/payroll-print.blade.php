@@ -208,32 +208,60 @@
         <span class="font" style="margin-top:1%;">EI Insurable <br> Hours
         </span> <span style="margin-left: 25%;" class="font"> {{$total_month_hr}}</span> <br> <br>
         
-       @php
+        @php
         $data = $job->month_approx_pay['hr_breakout'];
         $straight_hr_array = array_filter($data, function ($item) {
-          return isset($item['straight_hr']);
-        });
-        $overtime_hours1_array = array_filter($data, function ($item) {
-          return isset($item['overtime_hours1']);
-        });
-        $overtime_hours2_array = array_filter($data, function ($item) {
-          return isset($item['overtime_hours2']);
-        });
+         return isset($item['straight_hr']);
+       });
+       $straight_hr_array = collect(array_filter($straight_hr_array, function ($item) {
+       return isset($item['straight_hr']);
+       }))->map(function ($item) {
+           return floatval($item['straight_hr']);
+       });
+       $result1 = [
+           'straight_hr' => number_format($straight_hr_array->sum(), 2)
+       ];
+       $straight_hr_array=$result1;
        
-       @endphp  
-        
-        @if(!empty($straight_hr_array))
-        <span class="font"> Regular: {{number_format(reset($straight_hr_array)['straight_hr'],2)}} @ {{number_format($get_employee_payout->straight_pay_hours,2)}}/Hr</span><br>
-        @endif
+       $overtime_hours1_array = array_filter($data, function ($item) {
+         return isset($item['overtime_hours1']);
+       });
+       $overtime_hours1_array = collect(array_filter($overtime_hours1_array, function ($item) {
+       return isset($item['overtime_hours1']);
+       }))->map(function ($item) {
+           return floatval($item['overtime_hours1']);
+       });
+       $result2 = [
+           'overtime_hours1' => number_format($overtime_hours1_array->sum(), 2)
+       ];
+       $overtime_hours1_array=$result2;
+       $overtime_hours2_array = array_filter($data, function ($item) {
+         return isset($item['overtime_hours2']);
+       });
+       $overtime_hours2_array = collect(array_filter($overtime_hours2_array, function ($item) {
+       return isset($item['overtime_hours2']);
+       }))->map(function ($item) {
+           return floatval($item['overtime_hours2']);
+       });
+       $result3 = [
+           'overtime_hours2' => number_format($overtime_hours2_array->sum(), 2)
+       ];
+       $overtime_hours2_array=$result3;
+      
+      @endphp  
+       
+       @if(!empty($straight_hr_array) && floatval($straight_hr_array['straight_hr'])>0)
+       <span class="font"> Regular: {{number_format($straight_hr_array['straight_hr'],2)}} @ {{number_format($get_employee_payout->straight_pay_hours,2)}}/Hr</span><br>
+       @endif
 
 
-        @if(!empty($overtime_hours1_array))
-        <span class="font"> Overtime 1: {{number_format(reset($overtime_hours1_array)['overtime_hours1'],2)}} @ {{number_format($get_employee_payout->overtime_hours1,2)}}/Hr</span><br>
-        @endif
+       @if(!empty($overtime_hours1_array) && floatval($overtime_hours1_array['overtime_hours1'])>0)
+       <span class="font"> Overtime 1: {{number_format($overtime_hours1_array['overtime_hours1'],2)}} @ {{number_format($get_employee_payout->overtime_hours1,2)}}/Hr</span><br>
+       @endif
 
-        @if(!empty($overtime_hours2_array))
-        <span class="font"> Overtime 2: {{number_format(reset($overtime_hours2_array)['overtime_hours2'],2)}} @ {{number_format($get_employee_payout->overtime_hours2,2)}}/Hr</span><br>
-        @endif
+       @if(!empty($overtime_hours2_array) && floatval($overtime_hours2_array['overtime_hours2'])>0)
+       <span class="font"> Overtime 2: {{number_format($overtime_hours2_array['overtime_hours2'],2)}} @ {{number_format($get_employee_payout->overtime_hours2,2)}}/Hr</span><br>
+       @endif
 
         {{-- @if(isset($job->month_approx_pay['hr_breakout'][3]) && isset($job->month_approx_pay['hr_breakout'][3]['night_hours_pay']) && $job->month_approx_pay['hr_breakout'][3]['night_hours_pay']>0)
         <span class="font"> Overtime 3: {{number_format($job->month_approx_pay['hr_breakout'][3]['night_hours_pay'],2)}} @ {{number_format($get_employee_payout->night_hours_pay,2)}}/Hr</span><br><br><br>
@@ -355,28 +383,68 @@
           style="margin-left: 30%;border-bottom: 1px solid rgb(0, 0, 0);" class="font">-{{$withheld_total}}</span><br><br>
 
         <span class="font">Net Pay</span> <span style="margin-left: 15%;" class="font"> {{$net_pay}}</span> <span
-          style="margin-left: 33%;" class="font">{{$net_pay_total}}</span>
-          <br><br>
-          <span class="font" >EI Insurable <br> Hours
-          </span> <span style="margin-left: 25%;" class="font"> {{$total_month_hr}}</span> <br><br>
-
-         
-        @if(isset($job->month_approx_pay['hr_breakout'][0]) && isset($job->month_approx_pay['hr_breakout'][0]['straight_hr']) && $job->month_approx_pay['hr_breakout'][0]['straight_hr']>0)
-        <span class="font"> Regular: {{number_format($job->month_approx_pay['hr_breakout'][0]['straight_hr'],2)}} @ {{number_format($get_employee_payout->straight_pay_hours,2)}}/Hr</span><br><br><br>
+          style="margin-left: 33%;" class="font">{{$net_pay_total}}</span><br>
+        <span class="font" style="margin-top:1%;">EI Insurable <br> Hours
+        </span> <span style="margin-left: 25%;" class="font"> {{$total_month_hr}}</span> <br> <br>
+        
+       @php
+         $data = $job->month_approx_pay['hr_breakout'];
+		     $straight_hr_array = array_filter($data, function ($item) {
+          return isset($item['straight_hr']);
+        });
+        $straight_hr_array = collect(array_filter($straight_hr_array, function ($item) {
+        return isset($item['straight_hr']);
+        }))->map(function ($item) {
+            return floatval($item['straight_hr']);
+        });
+        $result1 = [
+            'straight_hr' => number_format($straight_hr_array->sum(), 2)
+        ];
+		    $straight_hr_array=$result1;
+        
+        $overtime_hours1_array = array_filter($data, function ($item) {
+          return isset($item['overtime_hours1']);
+        });
+        $overtime_hours1_array = collect(array_filter($overtime_hours1_array, function ($item) {
+        return isset($item['overtime_hours1']);
+        }))->map(function ($item) {
+            return floatval($item['overtime_hours1']);
+        });
+        $result2 = [
+            'overtime_hours1' => number_format($overtime_hours1_array->sum(), 2)
+        ];
+		    $overtime_hours1_array=$result2;
+        $overtime_hours2_array = array_filter($data, function ($item) {
+          return isset($item['overtime_hours2']);
+        });
+        $overtime_hours2_array = collect(array_filter($overtime_hours2_array, function ($item) {
+        return isset($item['overtime_hours2']);
+        }))->map(function ($item) {
+            return floatval($item['overtime_hours2']);
+        });
+        $result3 = [
+            'overtime_hours2' => number_format($overtime_hours2_array->sum(), 2)
+        ];
+		    $overtime_hours2_array=$result3;
+       
+       @endphp  
+        
+        @if(!empty($straight_hr_array) && floatval($straight_hr_array['straight_hr'])>0)
+        <span class="font"> Regular: {{number_format($straight_hr_array['straight_hr'],2)}} @ {{number_format($get_employee_payout->straight_pay_hours,2)}}/Hr</span><br>
         @endif
 
 
-        @if(isset($job->month_approx_pay['hr_breakout'][1]) && isset($job->month_approx_pay['hr_breakout'][1]['overtime_hours1']) && $job->month_approx_pay['hr_breakout'][1]['overtime_hours1']>0)
-        <span class="font"> Overtime 1: {{number_format($job->month_approx_pay['hr_breakout'][1]['overtime_hours1'],2)}} @ {{number_format($get_employee_payout->overtime_hours1,2)}}/Hr</span><br><br><br>
+        @if(!empty($overtime_hours1_array) && floatval($overtime_hours1_array['overtime_hours1'])>0)
+        <span class="font"> Overtime 1: {{number_format($overtime_hours1_array['overtime_hours1'],2)}} @ {{number_format($get_employee_payout->overtime_hours1,2)}}/Hr</span><br>
         @endif
 
-        @if(isset($job->month_approx_pay['hr_breakout'][2]) && isset($job->month_approx_pay['hr_breakout'][2]['overtime_hours2']) && $job->month_approx_pay['hr_breakout'][2]['overtime_hours2']>0)
-        <span class="font"> Overtime 2: {{number_format($job->month_approx_pay['hr_breakout'][2]['overtime_hours2'],2)}} @ {{number_format($get_employee_payout->overtime_hours2,2)}}/Hr</span><br><br><br>
+        @if(!empty($overtime_hours2_array) && floatval($overtime_hours2_array['overtime_hours2'])>0)
+        <span class="font"> Overtime 2: {{number_format($overtime_hours2_array['overtime_hours2'],2)}} @ {{number_format($get_employee_payout->overtime_hours2,2)}}/Hr</span><br>
         @endif
 
-        @if(isset($job->month_approx_pay['hr_breakout'][3]) && isset($job->month_approx_pay['hr_breakout'][3]['night_hours_pay']) && $job->month_approx_pay['hr_breakout'][3]['night_hours_pay']>0)
+        {{-- @if(isset($job->month_approx_pay['hr_breakout'][3]) && isset($job->month_approx_pay['hr_breakout'][3]['night_hours_pay']) && $job->month_approx_pay['hr_breakout'][3]['night_hours_pay']>0)
         <span class="font"> Overtime 3: {{number_format($job->month_approx_pay['hr_breakout'][3]['night_hours_pay'],2)}} @ {{number_format($get_employee_payout->night_hours_pay,2)}}/Hr</span><br><br><br>
-        @endif
+        @endif --}}
 
 
       </td>
